@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectApi", "ProjectApi\ProjectApi.csproj", "{DDA30FB4-DDD5-4CB5-8158-ED158EB199A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E73481D6-F3EA-4E37-9601-E6D7FADC4103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{407DDBED-4403-4189-86E0-C9045608901E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDA30FB4-DDD5-4CB5-8158-ED158EB199A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDA30FB4-DDD5-4CB5-8158-ED158EB199A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDA30FB4-DDD5-4CB5-8158-ED158EB199A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDA30FB4-DDD5-4CB5-8158-ED158EB199A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E73481D6-F3EA-4E37-9601-E6D7FADC4103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E73481D6-F3EA-4E37-9601-E6D7FADC4103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E73481D6-F3EA-4E37-9601-E6D7FADC4103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E73481D6-F3EA-4E37-9601-E6D7FADC4103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407DDBED-4403-4189-86E0-C9045608901E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407DDBED-4403-4189-86E0-C9045608901E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407DDBED-4403-4189-86E0-C9045608901E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407DDBED-4403-4189-86E0-C9045608901E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA7819CD-152A-4888-8083-092FA9AFF341}
+	EndGlobalSection
+EndGlobal
