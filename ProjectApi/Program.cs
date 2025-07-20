@@ -46,7 +46,7 @@ namespace ProjectApi
 
 
                
-                builder.WebHost.UseUrls("http://+:80");
+                builder.WebHost.UseUrls("http://+:3000");
 
 
 
