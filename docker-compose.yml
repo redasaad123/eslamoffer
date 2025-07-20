@@ -5,8 +5,14 @@ services:
     build: .
     #container_name: aspnet-api
     image: redasaad123/eslamoffer
-    ports:
-      - "3000:3000"
+    deploy:
+    replicas: 3
+    restart_policy:
+      condition: on-failure
+      delay: 5s
+    update_config:
+      parallelism: 2
+      delay: 10s
     networks:
       - webnet
 
