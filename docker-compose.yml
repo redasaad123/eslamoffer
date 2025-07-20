@@ -4,6 +4,7 @@ services:
   api:
     build: .
     #container_name: aspnet-api
+    image: redasaad123/eslamoffer
     ports:
       - "3000:3000"
     networks:
