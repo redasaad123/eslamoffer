@@ -41,7 +41,7 @@ namespace ProjectApi
             //);
 
             builder.Services.AddDbContext<AppDBContext>(options =>
-                options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+                options.UseMySql(builder.Configuration.GetConnectionString("ProdcutionConnection"),
                 new MySqlServerVersion(new Version(8, 0, 36))));
 
 
