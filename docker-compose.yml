@@ -4,6 +4,11 @@ services:
   api:
     build: .
     image: redasaad123/eslamoffer
+    env_file:
+      - .env
+    environment:
+      - ConnectionStrings__ProdcutionConnection=${PRODUCTION_CONN}
+      - ConnectionStrings__DefaultConnection=${DEFAULT_CONN}
     deploy:
       replicas: 3
       restart_policy:
