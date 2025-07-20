@@ -13,6 +13,8 @@ services:
       update_config:
         parallelism: 2
         delay: 10s
+    expose:
+      - "3000"
     networks:
       - webnet
 
