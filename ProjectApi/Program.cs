@@ -45,8 +45,8 @@ namespace ProjectApi
                 new MySqlServerVersion(new Version(8, 0, 36))));
 
 
-               
-                builder.WebHost.UseUrls("http://+:3000");
+
+            builder.WebHost.UseUrls("http://+:3000");
 
 
 
