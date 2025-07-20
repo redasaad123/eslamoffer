@@ -6,13 +6,13 @@ services:
     #container_name: aspnet-api
     image: redasaad123/eslamoffer
     deploy:
-    replicas: 3
-    restart_policy:
-      condition: on-failure
-      delay: 5s
-    update_config:
-      parallelism: 2
-      delay: 10s
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+      update_config:
+        parallelism: 2
+        delay: 10s
     networks:
       - webnet
 
