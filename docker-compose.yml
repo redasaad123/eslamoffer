@@ -5,7 +5,7 @@ services:
     build: .
     image: redasaad123/eslamoffer
     env_file:
-      - .env
+      - ../env/.env
     environment:
       - ConnectionStrings__ProdcutionConnection=${PRODUCTION_CONN}
       - ConnectionStrings__DefaultConnection=${DEFAULT_CONN}
