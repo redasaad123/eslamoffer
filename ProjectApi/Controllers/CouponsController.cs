@@ -3,6 +3,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjectApi.Controllers
 {
@@ -77,12 +78,30 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Category not found.");
             }
+
+            if (DTO.ImageUrl != null && DTO.ImageUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(DTO.ImageUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await DTO.ImageUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+            }
+
             var Coupons = new Coupons
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
                 Description = DTO.Description,
-                ImageUrl = DTO.ImageUrl,
+                ImageUrl = DTO.ImageUrl.FileName,
                 Discount = DTO.Discount,
                 CouponCode = DTO.CouponCode,
                 StratDate = DTO.StratDate,
@@ -111,9 +130,32 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Coupons not found.");
             }
+
+            
+            if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.ImageUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImageUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+                Coupons.ImageUrl = dto.ImageUrl.FileName;
+            }
+
+
+
+
             Coupons.Title = dto.Title;
             Coupons.Description = dto.Description;
-            Coupons.ImageUrl = dto.ImageUrl;
+           
             Coupons .Discount = dto.Discount;
             Coupons.CouponCode = dto.CouponCode;
             Coupons.StratDate = dto.StratDate;
