@@ -4,7 +4,7 @@ using Core.Settings;
 using Infrastructure.UnitOfWork;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.FileProviders;
 using Core.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -139,6 +139,15 @@ namespace ProjectApi
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+
+
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
+                RequestPath = "/uploads"
+            });
+            
             app.UseHttpsRedirection();
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();

@@ -34,6 +34,10 @@ namespace ProjectApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            
+
+
             var newCategory = new Category
             {
                 Id = Guid.NewGuid().ToString(),

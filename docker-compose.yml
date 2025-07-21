@@ -5,7 +5,7 @@ services:
     build: .
     image: redasaad123/eslamoffer
     volumes:
-      - ./uploads:/app/uploads
+      - ./uploads:/app/ProjectApi/uploads
     env_file:
       - .env
     environment:
