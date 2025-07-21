@@ -41,10 +41,33 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddStore")]
-        public async Task<IActionResult> AddStore([FromBody] StoreDTO dto)
+        public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // استخدم اسم الملف الأصلي (بعد تنظيفه)
+                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImageUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+            }
+
+
+
 
             var store = new Store
             {
@@ -53,7 +76,7 @@ namespace ProjectApi.Controllers
                 Isactive = true,
                 LastUpdatedAt = DateTime.UtcNow,
                 Name = dto.Name,
-                LogoUrl = dto.LogoUrl,
+                LogoUrl = dto.ImageUrl.FileName,
                 IsBast = dto.IsBast
             };
             var addedStore = await storeUnitOfWork.Entity.AddAsync(store);
@@ -71,8 +94,35 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Store not found.");
             }
+
+            if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // استخدم اسم الملف الأصلي (بعد تنظيفه)
+                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImageUrl.CopyToAsync(stream);
+
+                }
+                store.LogoUrl = dto.ImageUrl.FileName;
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+            }
+
+
+
+
+
             store.Name = dto.Name;
-            store.LogoUrl = dto.LogoUrl;
+           
             store.IsBast = dto.IsBast;
             store.LastUpdatedAt = DateTime.UtcNow;
             var updatedStore = await storeUnitOfWork.Entity.UpdateAsync(store);

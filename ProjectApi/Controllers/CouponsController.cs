@@ -144,12 +144,12 @@ namespace ProjectApi.Controllers
                     Directory.CreateDirectory(uploadsFolder);
 
                 // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(DTO.ImageUrl.FileName);
+                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await DTO.ImageUrl.CopyToAsync(stream);
+                    await dto.ImageUrl.CopyToAsync(stream);
                 }
 
                 //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";

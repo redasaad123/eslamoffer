@@ -20,7 +20,7 @@ namespace Core.Models
 
         public DateTime LastUpdatedAt { get; set; }
 
-        public bool Isactive { get; set; }
+        public bool? Isactive { get; set; }
 
         public bool IsBast {  get; set; }
 

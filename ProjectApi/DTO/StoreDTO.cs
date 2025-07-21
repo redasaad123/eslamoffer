@@ -5,7 +5,7 @@
 
         public string Name { get; set; }
 
-        public string? LogoUrl { get; set; }
+        public IFormFile? ImageUrl { get; set; }
 
         public bool IsBast { get; set; }
     }

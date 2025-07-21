@@ -41,16 +41,42 @@ namespace ProjectApi.Controllers
 
         [HttpPost("AddOffer")]
 
-        public async Task<IActionResult> AddOffer([FromBody] OfferDTO DTO)
+        public async Task<IActionResult> AddOffer([FromForm] OfferDTO DTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+
+            if (DTO.LogoUrl != null && DTO.LogoUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // استخدم اسم الملف الأصلي (بعد تنظيفه)
+                var fileName = Path.GetFileName(DTO.LogoUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await DTO.LogoUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+            }
+
+
+
+
+
             var newOffer = new Offers
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
                 LinkPage = DTO.LinkPage,
-                LogoUrl = DTO.LogoUrl,
+                LogoUrl = DTO.LogoUrl.FileName,
                 IsBast = DTO.IsBast
 
             };
@@ -73,7 +99,7 @@ namespace ProjectApi.Controllers
             }
             offer.Title = DTO.Title;
             offer.LinkPage = DTO.LinkPage;
-            offer.LogoUrl = DTO.LogoUrl;
+            offer.LogoUrl = DTO.LogoUrl.FileName;
             offer.IsBast = DTO.IsBast;
             await offersUnitOfWork.Entity.UpdateAsync(offer);
             offersUnitOfWork.Save();

@@ -30,12 +30,33 @@ namespace ProjectApi.Controllers
 
 
         [HttpPost("AddCategory")]
-        public async Task<IActionResult> AddCategory([FromBody] CategoryDTO dto)
+        public async Task<IActionResult> AddCategory([FromForm] CategoryDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            
+
+            if (dto.IconUrl != null && dto.IconUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // استخدم اسم الملف الأصلي (بعد تنظيفه)
+                var fileName = Path.GetFileName(dto.IconUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.IconUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+            }
+
+
 
 
             var newCategory = new Category
@@ -43,7 +64,7 @@ namespace ProjectApi.Controllers
                 Id = Guid.NewGuid().ToString(),
                 createdAt = DateTime.UtcNow,
                 Name = dto.Name,
-                IconUrl = dto.IconUrl
+                IconUrl = dto.IconUrl.FileName
 
             };
             await categoryUnitOfWork.Entity.AddAsync(newCategory);
@@ -63,8 +84,32 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Category not found.");
             }
+
+            if (category.IconUrl != null && category.IconUrl.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // استخدم اسم الملف الأصلي (بعد تنظيفه)
+                var fileName = Path.GetFileName(category.IconUrl.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await category.IconUrl.CopyToAsync(stream);
+                }
+
+                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+                existingCategory.IconUrl = category.IconUrl.FileName;
+            }
+
+
+
             existingCategory.Name = category.Name;
-            existingCategory.IconUrl = category.IconUrl;
+            
             await categoryUnitOfWork.Entity.UpdateAsync(existingCategory);
             categoryUnitOfWork.Save();
             return Ok(existingCategory);

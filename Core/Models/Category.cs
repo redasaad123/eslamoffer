@@ -12,7 +12,7 @@ namespace Core.Models
 
         public string Name { get; set; }
 
-        public string IconUrl { get; set; }
+        public string? IconUrl { get; set; }
 
         public DateTime createdAt { get; set; }
     }

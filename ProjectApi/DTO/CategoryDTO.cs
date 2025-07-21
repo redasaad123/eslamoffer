@@ -5,6 +5,6 @@
 
         public string Name { get; set; }
 
-        public string IconUrl { get; set; }
+        public IFormFile? IconUrl { get; set; }
     }
 }
