@@ -75,7 +75,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPut("UpdateCategory/{id}")]
-        public async Task<IActionResult> UpdateCategory(string id, [FromBody] CategoryDTO category)
+        public async Task<IActionResult> UpdateCategory(string id, [FromForm] CategoryDTO category)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

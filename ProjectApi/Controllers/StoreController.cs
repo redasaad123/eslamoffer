@@ -85,7 +85,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPut("UpdateStore/{id}")]
-        public async Task<IActionResult> UpdateStore(string id, [FromBody] StoreDTO dto)
+        public async Task<IActionResult> UpdateStore(string id, [FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

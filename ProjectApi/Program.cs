@@ -43,10 +43,14 @@ namespace ProjectApi
             builder.Services.AddDbContext<AppDBContext>(options =>
                 options.UseMySql(builder.Configuration.GetConnectionString("ProdcutionConnection"),
                 new MySqlServerVersion(new Version(8, 0, 36))));
+            var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
+            authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("Admin"));
+            authorizationBuilder.AddPolicy("UserRole", p => p.RequireRole("User"));
 
 
 
-            builder.WebHost.UseUrls("http://+:3000");
+
+            //builder.WebHost.UseUrls("http://+:3000");
 
 
 
@@ -139,14 +143,14 @@ namespace ProjectApi
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
 
 
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
-                RequestPath = "/uploads"
-            });
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
+            //    RequestPath = "/uploads"
+            //});
             
             app.UseHttpsRedirection();
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

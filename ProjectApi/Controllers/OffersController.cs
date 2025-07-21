@@ -88,7 +88,7 @@ namespace ProjectApi.Controllers
 
         }
         [HttpPut("UpdateOffer/{offerId}")]
-        public async Task<IActionResult> UpdateOffer([FromBody] OfferDTO DTO , string offerId)
+        public async Task<IActionResult> UpdateOffer([FromForm] OfferDTO DTO , string offerId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
