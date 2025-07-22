@@ -12,7 +12,7 @@ services:
       - ConnectionStrings__ProdcutionConnection=${PRODUCTION_CONN}
       - ConnectionStrings__DefaultConnection=${DEFAULT_CONN}
     expose:
-      - "3000"
+      - "8080"
     networks:
       - webnet
     deploy:
