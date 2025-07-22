@@ -8,9 +8,7 @@ services:
       - ./uploads:/app/ProjectApi/uploads
     env_file:
       - .env
-    environment:
-      - ConnectionStrings__ProductionConnection=${PRODUCTION_CONN}
-      - ConnectionStrings__DefaultConnection=${DEFAULT_CONN}
+    environment: []
     expose:
       - "8080"
     networks:
