@@ -13,16 +13,13 @@ namespace ProjectAPI.Controllers
     
     public class FeedbackController : ControllerBase
     {
-        private readonly UserManager<AppUser> userManager;
         private readonly IUnitOfWork<FeedBack> feedBackUnitOfWork;
 
         public FeedbackController( IUnitOfWork<FeedBack> feedBackUnitOfWork)
         {
-            this.userManager = userManager;
+            
             this.feedBackUnitOfWork = feedBackUnitOfWork;
         }
-
-
         [HttpGet("GetFeedBack")]
         //[Authorize("AdminRole")]
         public async Task<IActionResult> FeedBack()
@@ -54,6 +51,8 @@ namespace ProjectAPI.Controllers
 
 
             };
+            await feedBackUnitOfWork.Entity.AddAsync(feedback);
+            feedBackUnitOfWork.Save();
 
             return Ok(feedback);
 

@@ -48,8 +48,6 @@ namespace ProjectApi
             authorizationBuilder.AddPolicy("UserRole", p => p.RequireRole("User"));
 
 
-
-
             builder.WebHost.UseUrls("http://+:3000");
 
 
