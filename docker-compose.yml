@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      - ConnectionStrings__ProdcutionConnection=${PRODUCTION_CONN}
+      - ConnectionStrings__ProductionConnection=${PRODUCTION_CONN}
       - ConnectionStrings__DefaultConnection=${DEFAULT_CONN}
     expose:
       - "8080"

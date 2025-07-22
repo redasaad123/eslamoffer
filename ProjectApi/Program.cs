@@ -41,7 +41,7 @@ namespace ProjectApi
             //);
 
             builder.Services.AddDbContext<AppDBContext>(options =>
-                options.UseMySql(builder.Configuration.GetConnectionString("ProdcutionConnection"),
+                options.UseMySql(builder.Configuration.GetConnectionString("ProductionConnection"),
                 new MySqlServerVersion(new Version(8, 0, 36))));
             var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
             authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("Admin"));
