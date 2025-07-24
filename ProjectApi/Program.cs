@@ -45,7 +45,8 @@ namespace ProjectApi
                 new MySqlServerVersion(new Version(8, 0, 36))));
             var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
             authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("Admin"));
-            authorizationBuilder.AddPolicy("UserRole", p => p.RequireRole("User"));
+            authorizationBuilder.AddPolicy("ContentWriter", p => p.RequireRole("ContentWriter"));
+            authorizationBuilder.AddPolicy("Author", p => p.RequireRole("Author"));
 
 
             builder.WebHost.UseUrls("http://+:8080");
