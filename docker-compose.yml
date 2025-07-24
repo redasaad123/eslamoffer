@@ -82,8 +82,8 @@ services:
       - ./uploads:/app/ProjectApi/uploads
     env_file:
       - .env
-    environment:
-      - VIRTUAL_HOST=api.eslamoffers.com
+    # environment:
+    #   - VIRTUAL_HOST=api.eslamoffers.com
     expose:
       - "80"
     networks:
