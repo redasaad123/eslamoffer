@@ -49,7 +49,7 @@ namespace ProjectApi
             authorizationBuilder.AddPolicy("Author", p => p.RequireRole("Author"));
 
 
-            builder.WebHost.UseUrls("http://+:80");
+            builder.WebHost.UseUrls("http://+:80 ;https://+:443");
 
 
 
