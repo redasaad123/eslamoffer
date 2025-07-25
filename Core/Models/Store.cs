@@ -19,6 +19,8 @@ namespace Core.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime LastUpdatedAt { get; set; }
+        public string? HeaderDescription { get; set; }
+        public string? Description { get; set; }
 
         public bool? Isactive { get; set; }
 

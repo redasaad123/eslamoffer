@@ -66,15 +66,16 @@ namespace ProjectApi.Controllers
 
                 //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
             }
-
-
-
-
-
             var newOffer = new Offers
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
+                storeId = DTO.storeId,
+                couponId = DTO.couponId,
+                Price = DTO.Price,
+                Discount = DTO.Discount,
+                CreatedAt = DateTime.Now,
+                LastUpdatedAt = DateTime.Now,
                 LinkPage = DTO.LinkPage,
                 LogoUrl = DTO.LogoUrl.FileName,
                 IsBast = DTO.IsBast
@@ -98,6 +99,10 @@ namespace ProjectApi.Controllers
                 return NotFound("Offer not found.");
             }
             offer.Title = DTO.Title;
+            offer.storeId = DTO.storeId;
+            offer.Price = DTO.Price;
+            offer.Discount = DTO.Discount;
+            offer.LastUpdatedAt = DateTime.Now;
             offer.LinkPage = DTO.LinkPage;
             offer.LogoUrl = DTO.LogoUrl.FileName;
             offer.IsBast = DTO.IsBast;

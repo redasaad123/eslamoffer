@@ -60,7 +60,18 @@ namespace ProjectApi.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetCouponsByStore/{storeId}")]
+        public async Task<IActionResult> GetCouponsByStore(string storeId)
+        {
+            var coupons = await couponsUnitOfWork.Entity.FindAll(x => x.StoreId == storeId);
+            if (coupons == null || !coupons.Any())
+            {
+                return NotFound("No coupons found for this store.");
+            }
 
+            return Ok(coupons);
+        }
 
 
         [HttpPost("AddCoupon")]
@@ -103,13 +114,14 @@ namespace ProjectApi.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
-                Description = DTO.Description,
+                DescriptionCoupon = DTO.Description,
                 ImageUrl = DTO.ImageUrl.FileName,
                 Discount = DTO.Discount,
                 CouponCode = DTO.CouponCode,
                 StratDate = DTO.StratDate,
                 EndDate = DTO.EndDate,
                 CreatedAt = DateTime.UtcNow,
+                LastUseAt = DateTime.UtcNow ,
                 IsActive = DTO.IsActive ?? true,
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
@@ -120,6 +132,22 @@ namespace ProjectApi.Controllers
             couponsUnitOfWork.Save();
             return Ok(Coupons);
 
+        }
+
+        [HttpPut("UpdateLastUse/{Id}")]
+        public async Task<IActionResult> UpdateLastUse(string Id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var Coupons = await couponsUnitOfWork.Entity.GetAsync(Id);
+            if (Coupons == null)
+            {
+                return NotFound("Coupons not found.");
+            }
+            Coupons.LastUseAt = DateTime.UtcNow;
+            await couponsUnitOfWork.Entity.UpdateAsync(Coupons);
+            couponsUnitOfWork.Save();
+            return Ok();
         }
 
 
@@ -160,9 +188,8 @@ namespace ProjectApi.Controllers
 
 
             Coupons.Title = dto.Title;
-            Coupons.Description = dto.Description;
-           
-            Coupons .Discount = dto.Discount;
+            Coupons.DescriptionCoupon = dto.Description;
+            Coupons.Discount = dto.Discount;
             Coupons.CouponCode = dto.CouponCode;
             Coupons.StratDate = dto.StratDate;
             Coupons.EndDate = dto.EndDate;

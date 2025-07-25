@@ -13,7 +13,7 @@ namespace Core.Models
 
         public string Title { get; set; }
 
-        public string? Description { get; set; }
+        public string? DescriptionCoupon { get; set; }
 
         public string? ImageUrl { get; set; }
 
@@ -26,6 +26,8 @@ namespace Core.Models
         public DateTime? EndDate { get; set; }
 
         public DateTime? CreatedAt { get; set; }
+
+        public DateTime? LastUseAt { get; set; }
 
         public bool? IsActive { get; set; }
 

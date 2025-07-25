@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250725220609_updatetableCstor")]
+    partial class updatetableCstor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,32 +173,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("Core.Models.CouponsOffers", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("CouponCode")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime?>("StratDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CouponsOffers");
-                });
-
             modelBuilder.Entity("Core.Models.FeedBack", b =>
                 {
                     b.Property<string>("Id")
@@ -230,17 +207,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<double?>("Discount")
-                        .HasColumnType("double");
-
                     b.Property<bool>("IsBast")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime?>("LastUpdatedAt")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LinkPage")
                         .HasColumnType("longtext");
@@ -248,17 +216,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext");
 
-                    b.Property<double?>("Price")
-                        .HasColumnType("double");
-
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("couponId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("storeId")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

@@ -40,6 +40,28 @@ namespace ProjectApi.Controllers
             return Ok(stores);
         }
 
+        [HttpGet("GetStoreById/{id}")]
+        public async Task<IActionResult> GetStoreById(string id)
+        {
+            var store = await storeUnitOfWork.Entity.GetAsync(id);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+            var stores = new
+            {
+                Id = store.Id,
+                Name = store.Name,
+                LogoUrl = store.LogoUrl,
+                CreatedAt = store.CreatedAt,
+                LastUpdatedAt = store.LastUpdatedAt,
+                HeaderDescription = store.HeaderDescription,
+                Description = store.Description,
+            };
+
+            return Ok(store);
+        }
+
         [HttpPost("AddStore")]
         public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
         {
@@ -66,15 +88,14 @@ namespace ProjectApi.Controllers
                 //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
             }
 
-
-
-
             var store = new Store
             {
                 Id = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.UtcNow,
                 Isactive = true,
                 LastUpdatedAt = DateTime.UtcNow,
+                HeaderDescription = dto.HeaderDescription,
+                Description = dto.Description,
                 Name = dto.Name,
                 LogoUrl = dto.ImageUrl.FileName,
                 IsBast = dto.IsBast
@@ -117,12 +138,9 @@ namespace ProjectApi.Controllers
                 //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
             }
 
-
-
-
-
             store.Name = dto.Name;
-           
+            store.HeaderDescription = dto.HeaderDescription;
+            store.Description = dto.Description;
             store.IsBast = dto.IsBast;
             store.LastUpdatedAt = DateTime.UtcNow;
             var updatedStore = await storeUnitOfWork.Entity.UpdateAsync(store);
@@ -142,12 +160,6 @@ namespace ProjectApi.Controllers
             storeUnitOfWork.Entity.Delete(store);
             storeUnitOfWork.Save();
             return Ok("Store deleted successfully.");
-
-
-
-
-
-
 
 
         }
