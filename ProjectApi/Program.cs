@@ -36,7 +36,7 @@ namespace ProjectApi
             authorizationBuilder.AddPolicy("Author", p => p.RequireRole("Author"));
 
 
-            //builder.WebHost.UseUrls("http://+:80");
+            builder.WebHost.UseUrls("http://+:80");
 
             builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("jwt"));
 
@@ -126,14 +126,14 @@ namespace ProjectApi
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
+            app.UseStaticFiles(new StaticFileOptions
+            {
 
 
-            //    FileProvider = new PhysicalFileProvider(
-            //        Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
-            //    RequestPath = "/uploads"
-            //});
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
+                RequestPath = "/uploads"
+            });
 
             app.UseHttpsRedirection();
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
