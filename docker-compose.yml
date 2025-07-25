@@ -1,73 +1,3 @@
-# version: "3.9"
-
-# services:
-#   api:
-#     build: .
-#     image: redasaad123/eslamoffer
-#     volumes:
-#       - ./uploads:/app/ProjectApi/uploads
-#     env_file:
-#       - .env
-#     environment: []
-#     expose:
-#       - "80"
-#     networks:
-#       - webnet
-#     deploy:
-#       replicas: 3
-#       restart_policy:
-#         condition: on-failure
-#         delay: 5s
-#       update_config:
-#         parallelism: 2
-#         delay: 10s
-
-#   nginx:
-#     image: nginx:latest
-#     container_name: nginx-proxy
-#     depends_on:
-#       - api
-#     ports:
-#       - "80:8080"
-#       - "8443:443"
-#     volumes:
-#       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#       - webroot:/var/www/html
-#     networks:
-#       - webnet
-
-#   certbot:
-#     image: certbot/certbot
-#     container_name: certbot
-#     volumes:
-#       - webroot:/var/www/html
-#       - certbot-etc:/etc/letsencrypt
-#       - certbot-var:/var/lib/letsencrypt
-#     #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-#     depends_on:
-#       - nginx
-#     #networks:
-#       #- webnet
-#     command: certonly --webroot --webroot-path=/var/www/html --email support@eslamoffer.com --agree-tos --no-eff-email --non-interactive --keep-until-expiring -d api.eslamoffer.com
-
-#   certbot-renew:
-#     image: certbot/certbot
-#     volumes:
-#       - webroot:/var/www/html
-#       - certbot-etc:/etc/letsencrypt
-#       - certbot-var:/var/lib/letsencrypt
-#     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-#     networks:
-#       - webnet
-
-# networks:
-#   webnet:
-
-# volumes:
-#   webroot:
-#   certbot-etc:
-#   certbot-var:
-
 version: "3.9"
 
 services:
@@ -78,8 +8,7 @@ services:
       - ./uploads:/app/ProjectApi/uploads
     env_file:
       - .env
-    # environment:
-    #   - VIRTUAL_HOST=api.eslamoffers.com
+    environment: []
     expose:
       - "80"
     networks:
@@ -99,26 +28,27 @@ services:
     depends_on:
       - api
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:8080"
+      - "8443:443"
     volumes:
-      - ./certs:/etc/letsencrypt:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - webroot:/var/www/html
-      - certbot-etc:/etc/letsencrypt
     networks:
       - webnet
 
   certbot:
     image: certbot/certbot
     container_name: certbot
-      - ./certs:/etc/letsencrypt
+    volumes:
       - webroot:/var/www/html
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
+    #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     depends_on:
       - nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email support@eslamoffer.com --agree-tos --no-eff-email --non-interactive --keep-until-expiring -d api.eslamoffers.com
+    #networks:
+      #- webnet
+    command: certonly --webroot --webroot-path=/var/www/html --email support@eslamoffer.com --agree-tos --no-eff-email --non-interactive --keep-until-expiring -d api.eslamoffer.com
 
   certbot-renew:
     image: certbot/certbot
@@ -137,6 +67,76 @@ volumes:
   webroot:
   certbot-etc:
   certbot-var:
+
+# version: "3.9"
+
+# services:
+#   api:
+#     build: .
+#     image: redasaad123/eslamoffer
+#     volumes:
+#       - ./uploads:/app/ProjectApi/uploads
+#     env_file:
+#       - .env
+#     # environment:
+#     #   - VIRTUAL_HOST=api.eslamoffers.com
+#     expose:
+#       - "80"
+#     networks:
+#       - webnet
+#     deploy:
+#       replicas: 3
+#       restart_policy:
+#         condition: on-failure
+#         delay: 5s
+#       update_config:
+#         parallelism: 2
+#         delay: 10s
+
+#   nginx:
+#     image: nginx:latest
+#     container_name: nginx-proxy
+#     depends_on:
+#       - api
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     volumes:
+#       - ./certs:/etc/letsencrypt:ro
+#       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+#       - webroot:/var/www/html
+#       - certbot-etc:/etc/letsencrypt
+#     networks:
+#       - webnet
+
+#   certbot:
+#     image: certbot/certbot
+#     container_name: certbot
+#       - ./certs:/etc/letsencrypt
+#       - webroot:/var/www/html
+#       - certbot-etc:/etc/letsencrypt
+#       - certbot-var:/var/lib/letsencrypt
+#     depends_on:
+#       - nginx
+#     command: certonly --webroot --webroot-path=/var/www/html --email support@eslamoffer.com --agree-tos --no-eff-email --non-interactive --keep-until-expiring -d api.eslamoffers.com
+
+#   certbot-renew:
+#     image: certbot/certbot
+#     volumes:
+#       - webroot:/var/www/html
+#       - certbot-etc:/etc/letsencrypt
+#       - certbot-var:/var/lib/letsencrypt
+#     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+#     networks:
+#       - webnet
+
+# networks:
+#   webnet:
+
+# volumes:
+#   webroot:
+#   certbot-etc:
+#   certbot-var:
 # version: "3.9"
 
 # services:
