@@ -18,6 +18,7 @@ using System.Drawing;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
 using ProjectApi.Services;
+using Core.Services;
 
 namespace ProjectApi
 {
@@ -34,15 +35,21 @@ namespace ProjectApi
             var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
             authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("Admin"));
             authorizationBuilder.AddPolicy("ContentWriter", p => p.RequireRole("ContentWriter"));
-            authorizationBuilder.AddPolicy("Author", p => p.RequireRole("Author"));
+            authorizationBuilder.AddPolicy("Author", p => p.RequireRole("","Author"));
 
 
             builder.WebHost.UseUrls("http://+:80");
 
-            builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("jwt"));
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("jwt"));
+            builder.Services.Configure<EmailConfgSettings>(builder.Configuration.GetSection("email-confg"));
+
+
 
             builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             builder.Services.AddTransient<StoreImage>();
+            builder.Services.AddTransient<SendEmailServices>();
+            builder.Services.AddTransient<GeneratePassword>();
+            builder.Services.AddTransient<MessageRole>();
 
 
 

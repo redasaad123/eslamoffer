@@ -7,7 +7,6 @@
         public double? Price { get; set; }
         public double? Discount { get; set; }
         public string? LinkPage { get; set; }
-        public string? storeId { get; set; }
         public string? couponId { get; set; }
 
         public IFormFile? ImageStoreUrl { get; set; }

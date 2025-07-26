@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.AuthenticationDTO
 {
-    public class ForgetPasswordDTO
-    {
-        public string Email { get; set; }
+    public class RoleDTO
+    { 
+        public string RoleName { get; set; }
     }
 }

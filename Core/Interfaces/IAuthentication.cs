@@ -13,6 +13,8 @@ namespace Core.Interfaces
         Task<AuthenticateDTO> LoginAsync(LogInDTo dto);
 
         Task<AuthenticateDTO> RefreshTokenAsync(string token);
+        Task<string> AddRoleToUser(RoleToUserDTO dto);
+        Task<string> AddRole(RoleDTO dto);
 
     }
 }
