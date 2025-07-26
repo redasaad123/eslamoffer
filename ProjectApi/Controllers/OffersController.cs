@@ -3,6 +3,8 @@ using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
+using ProjectApi.Services;
+using System;
 
 namespace ProjectApi.Controllers
 {
@@ -10,10 +12,12 @@ namespace ProjectApi.Controllers
     [ApiController]
     public class OffersController : ControllerBase
     {
+        private readonly StoreImage storeImage;
         private readonly IUnitOfWork<Offers> offersUnitOfWork;
 
-        public OffersController(IUnitOfWork<Offers> OffersUnitOfWork)
+        public OffersController(StoreImage storeImage,IUnitOfWork<Offers> OffersUnitOfWork)
         {
+            this.storeImage = storeImage;
             offersUnitOfWork = OffersUnitOfWork;
         }
 
@@ -47,37 +51,27 @@ namespace ProjectApi.Controllers
                 return BadRequest(ModelState);
 
 
-            if (DTO.LogoUrl != null && DTO.LogoUrl.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
+            var urlLogo = await storeImage.SaveImageAsync(DTO.LogoUrl);
+
+            var urlImage = await storeImage.SaveImageAsync(DTO.ImageStoreUrl);
 
 
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
 
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(DTO.LogoUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await DTO.LogoUrl.CopyToAsync(stream);
-                }
 
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-            }
+
             var newOffer = new Offers
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
-                storeId = DTO.storeId,
                 couponId = DTO.couponId,
                 Price = DTO.Price,
                 Discount = DTO.Discount,
                 CreatedAt = DateTime.Now,
                 LastUpdatedAt = DateTime.Now,
                 LinkPage = DTO.LinkPage,
-                LogoUrl = DTO.LogoUrl.FileName,
+                ImageStoreUrl = urlImage,
+                LogoUrl = urlLogo,
                 IsBast = DTO.IsBast
 
             };
@@ -98,13 +92,28 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Offer not found.");
             }
+
+
+            if (DTO.LogoUrl != null && DTO.LogoUrl.Length > 0)
+            {
+                var urlLogo = await storeImage.SaveImageAsync(DTO.LogoUrl);
+
+
+                offer.LogoUrl = urlLogo;
+            }
+
+            if (DTO.ImageStoreUrl != null && DTO.ImageStoreUrl.Length > 0)
+            {
+                var urlImage = await storeImage.SaveImageAsync(DTO.ImageStoreUrl);
+                offer.ImageStoreUrl = urlImage;
+            }
+
+
             offer.Title = DTO.Title;
-            offer.storeId = DTO.storeId;
             offer.Price = DTO.Price;
             offer.Discount = DTO.Discount;
             offer.LastUpdatedAt = DateTime.Now;
             offer.LinkPage = DTO.LinkPage;
-            offer.LogoUrl = DTO.LogoUrl.FileName;
             offer.IsBast = DTO.IsBast;
             await offersUnitOfWork.Entity.UpdateAsync(offer);
             offersUnitOfWork.Save();

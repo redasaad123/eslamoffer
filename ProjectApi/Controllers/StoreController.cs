@@ -3,6 +3,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
+using ProjectApi.Services;
 
 namespace ProjectApi.Controllers
 {
@@ -11,10 +12,12 @@ namespace ProjectApi.Controllers
     public class StoreController : ControllerBase
     {
         private readonly IUnitOfWork<Store> storeUnitOfWork;
+        private readonly StoreImage services;
 
-        public StoreController(IUnitOfWork<Store> StoreUnitOfWork)
+        public StoreController(IUnitOfWork<Store> StoreUnitOfWork , StoreImage services)
         {
             storeUnitOfWork = StoreUnitOfWork;
+            this.services = services;
         }
 
 
@@ -68,25 +71,7 @@ namespace ProjectApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-
-
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.ImageUrl.CopyToAsync(stream);
-                }
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-            }
+            var url = await services.SaveImageAsync(dto.ImageUrl);
 
             var store = new Store
             {
@@ -97,7 +82,7 @@ namespace ProjectApi.Controllers
                 HeaderDescription = dto.HeaderDescription,
                 Description = dto.Description,
                 Name = dto.Name,
-                LogoUrl = dto.ImageUrl.FileName,
+                LogoUrl = url,
                 IsBast = dto.IsBast
             };
             var addedStore = await storeUnitOfWork.Entity.AddAsync(store);
@@ -116,26 +101,10 @@ namespace ProjectApi.Controllers
                 return NotFound("Store not found.");
             }
 
-            if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
+            if(dto.ImageUrl != null)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-
-
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.ImageUrl.CopyToAsync(stream);
-
-                }
-                store.LogoUrl = dto.ImageUrl.FileName;
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+                var url = await services.SaveImageAsync(dto.ImageUrl);
+                store.LogoUrl = url;
             }
 
             store.Name = dto.Name;

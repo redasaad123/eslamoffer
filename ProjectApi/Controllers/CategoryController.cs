@@ -3,6 +3,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
+using ProjectApi.Services;
 
 namespace ProjectApi.Controllers
 {
@@ -11,10 +12,12 @@ namespace ProjectApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly IUnitOfWork<Category> categoryUnitOfWork;
+        private readonly StoreImage storeImage;
 
-        public CategoryController(IUnitOfWork<Category> CategoryUnitOfWork)
+        public CategoryController(IUnitOfWork<Category> CategoryUnitOfWork , StoreImage storeImage)
         {
             categoryUnitOfWork = CategoryUnitOfWork;
+            this.storeImage = storeImage;
         }
 
         [HttpGet("GetAllCategories")]
@@ -35,36 +38,14 @@ namespace ProjectApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-
-            if (dto.IconUrl != null && dto.IconUrl.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-
-
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(dto.IconUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.IconUrl.CopyToAsync(stream);
-                }
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-            }
-
-
-
+            var url = await storeImage.SaveImageAsync(dto.IconUrl);
 
             var newCategory = new Category
             {
                 Id = Guid.NewGuid().ToString(),
                 createdAt = DateTime.UtcNow,
                 Name = dto.Name,
-                IconUrl = dto.IconUrl.FileName
+                IconUrl = url
 
             };
             await categoryUnitOfWork.Entity.AddAsync(newCategory);
@@ -85,26 +66,12 @@ namespace ProjectApi.Controllers
                 return NotFound("Category not found.");
             }
 
-            if (category.IconUrl != null && category.IconUrl.Length > 0)
+            if(category.IconUrl != null)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-
-
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(category.IconUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await category.IconUrl.CopyToAsync(stream);
-                }
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-                existingCategory.IconUrl = category.IconUrl.FileName;
+                var url = await storeImage.SaveImageAsync(category.IconUrl);
+                existingCategory.IconUrl = url;
             }
+
 
 
 

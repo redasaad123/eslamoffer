@@ -3,6 +3,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
+using ProjectApi.Services;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjectApi.Controllers
@@ -11,12 +12,14 @@ namespace ProjectApi.Controllers
     [ApiController]
     public class CouponsController : ControllerBase
     {
+        private readonly StoreImage storeImage;
         private readonly IUnitOfWork<Store> storeUnitOfWork;
         private readonly IUnitOfWork<Coupons> couponsUnitOfWork;
         private readonly IUnitOfWork<Category> categoryUnitOfWork;
 
-        public CouponsController(IUnitOfWork<Store> StoreUnitOfWork , IUnitOfWork<Coupons> CouponsUnitOfWork, IUnitOfWork<Category> CategoryUnitOfWork)
+        public CouponsController( StoreImage storeImage,IUnitOfWork<Store> StoreUnitOfWork , IUnitOfWork<Coupons> CouponsUnitOfWork, IUnitOfWork<Category> CategoryUnitOfWork)
         {
+            this.storeImage = storeImage;
             storeUnitOfWork = StoreUnitOfWork;
             couponsUnitOfWork = CouponsUnitOfWork;
             categoryUnitOfWork = CategoryUnitOfWork;
@@ -90,38 +93,19 @@ namespace ProjectApi.Controllers
                 return NotFound("Category not found.");
             }
 
-            if (DTO.ImageUrl != null && DTO.ImageUrl.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-                
-    
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(DTO.ImageUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await DTO.ImageUrl.CopyToAsync(stream);
-                }
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-            }
-
+            var url = await storeImage.SaveImageAsync(DTO.ImageUrl);
             var Coupons = new Coupons
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = DTO.Title,
                 DescriptionCoupon = DTO.Description,
-                ImageUrl = DTO.ImageUrl.FileName,
+                ImageUrl = url,
                 Discount = DTO.Discount,
                 CouponCode = DTO.CouponCode,
                 StratDate = DTO.StratDate,
                 EndDate = DTO.EndDate,
-                CreatedAt = DateTime.UtcNow,
-                LastUseAt = DateTime.UtcNow ,
+                CreatedAt = DateTime.Now,
+                LastUseAt =  DateTime.Now.ToString(@"hh/:mm"),
                 IsActive = DTO.IsActive ?? true,
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
@@ -144,7 +128,7 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Coupons not found.");
             }
-            Coupons.LastUseAt = DateTime.UtcNow;
+            Coupons.LastUseAt = DateTime.Now.ToString(@"hh:mm");    
             await couponsUnitOfWork.Entity.UpdateAsync(Coupons);
             couponsUnitOfWork.Save();
             return Ok();
@@ -163,29 +147,13 @@ namespace ProjectApi.Controllers
             }
 
             
+
+
             if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
             {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads");
-                
-    
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                // استخدم اسم الملف الأصلي (بعد تنظيفه)
-                var fileName = Path.GetFileName(dto.ImageUrl.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.ImageUrl.CopyToAsync(stream);
-                }
-
-                //imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-                Coupons.ImageUrl = dto.ImageUrl.FileName;
+                var url = await storeImage.SaveImageAsync(dto.ImageUrl);
+                Coupons.ImageUrl = url;
             }
-
-
-
 
             Coupons.Title = dto.Title;
             Coupons.DescriptionCoupon = dto.Description;

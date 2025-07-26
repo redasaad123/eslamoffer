@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using System.Drawing;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
+using ProjectApi.Services;
 
 namespace ProjectApi
 {
@@ -41,6 +42,7 @@ namespace ProjectApi
             builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("jwt"));
 
             builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            builder.Services.AddTransient<StoreImage>();
 
 
 

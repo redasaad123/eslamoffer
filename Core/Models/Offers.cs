@@ -20,12 +20,7 @@ namespace Core.Models
         public double? Discount { get; set; }
         public string? LinkPage { get; set; }
         public bool IsBast { get; set; } = false;
-
-        [ForeignKey("storeId")]
-        public string? storeId { get; set; }
-        [NotMapped]
-        public Store? store { get; set; }
-
+        public string? ImageStoreUrl { get; set; }
         [ForeignKey("couponId")]
         public string? couponId { get; set; }
 
