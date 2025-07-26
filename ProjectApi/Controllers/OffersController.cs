@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
@@ -44,6 +45,7 @@ namespace ProjectApi.Controllers
 
 
         [HttpPost("AddOffer")]
+        [Authorize("AdminRole")]
 
         public async Task<IActionResult> AddOffer([FromForm] OfferDTO DTO)
         {
@@ -84,6 +86,7 @@ namespace ProjectApi.Controllers
 
         }
         [HttpPut("UpdateOffer/{offerId}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> UpdateOffer([FromForm] OfferDTO DTO , string offerId)
         {
             if (!ModelState.IsValid)
@@ -122,6 +125,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpDelete("DeleteOffer/{offerId}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteOffer(string offerId)
         {
             var offer = await offersUnitOfWork.Entity.GetAsync(offerId);

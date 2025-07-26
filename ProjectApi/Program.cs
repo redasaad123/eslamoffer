@@ -33,9 +33,9 @@ namespace ProjectApi
                 options.UseMySql(builder.Configuration.GetConnectionString("ProductionConnection"),
                 new MySqlServerVersion(new Version(8, 0, 36))));
             var authorizationBuilder = builder.Services.AddAuthorizationBuilder();
-            authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("Admin"));
-            authorizationBuilder.AddPolicy("ContentWriter", p => p.RequireRole("ContentWriter"));
-            authorizationBuilder.AddPolicy("Author", p => p.RequireRole("","Author"));
+            authorizationBuilder.AddPolicy("AdminRole", p => p.RequireRole("admin"));
+            authorizationBuilder.AddPolicy("EditorRole", p => p.RequireRole("Admin", "editor"));
+            authorizationBuilder.AddPolicy("AuthorRole", p => p.RequireRole("Admin","author"));
 
 
             builder.WebHost.UseUrls("http://+:80");

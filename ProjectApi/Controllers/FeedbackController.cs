@@ -21,7 +21,7 @@ namespace ProjectAPI.Controllers
             this.feedBackUnitOfWork = feedBackUnitOfWork;
         }
         [HttpGet("GetFeedBack")]
-        //[Authorize("AdminRole")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> FeedBack()
         {
 
@@ -59,7 +59,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpDelete("DeleteMessage/{feedBackId}")]
-        //[Authorize("AdminRole")]
+        [Authorize("AdminRole")]
         public async Task< IActionResult> DeleteMessage(string feedBackId)
         {
             var feedback = await feedBackUnitOfWork.Entity.GetAsync(feedBackId);

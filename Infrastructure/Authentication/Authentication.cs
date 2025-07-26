@@ -119,19 +119,19 @@ namespace Infrastructure.Authentication
             }
 
 
-            var Claim = new Claim(dto.Role.ToString(), dto.Role.ToString());
+            var Claim = new Claim(dto.Role.ToString().ToLower(), dto.Role.ToString().ToLower());
             await userManager.AddClaimAsync(user, Claim);
 
-            var roleIsExists = await roleManager.RoleExistsAsync(dto.Role.ToString());
+            var roleIsExists = await roleManager.RoleExistsAsync(dto.Role.ToString().ToLower());
             if (roleIsExists)
             {
-                await userManager.AddToRoleAsync(user, dto.Role.ToString());
+                await userManager.AddToRoleAsync(user, dto.Role.ToString().ToLower());
                 
             }
             else
             {
-                await roleManager.CreateAsync(new IdentityRole(dto.Role.ToString()));
-                await userManager.AddToRoleAsync(user, dto.Role.ToString());
+                await roleManager.CreateAsync(new IdentityRole(dto.Role.ToString().ToLower()));
+                await userManager.AddToRoleAsync(user, dto.Role.ToString().ToLower());
                 
             }
 
@@ -139,17 +139,19 @@ namespace Infrastructure.Authentication
             
 
 
-            var jwtSecurtyToken = await CreateToken(user);
-            return new AuthenticateDTO
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                Expireson = jwtSecurtyToken.ValidTo,
-                IsAuthenticated = true,
-                Roles = new List<string> { dto.Role.ToString() },
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurtyToken),
-                Message = "This Email Is Created",
-            };
+            //var jwtSecurtyToken = await CreateToken(user);
+            //return new AuthenticateDTO
+            //{
+            //    Name = dto.Name,
+            //    Email = dto.Email,
+            //    //Expireson = jwtSecurtyToken.ValidTo,
+            //    IsAuthenticated = true,
+            //    Roles = new List<string> { dto.Role.ToString() },
+            //    //Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurtyToken),
+            //    Message = "This Email Is Created",
+            //};
+
+            return new AuthenticateDTO { Message = "This Email Is Created", Email = dto.Email, Name = dto.Name, Roles = new List<string> { dto.Role.ToString() } };
         }
 
         public async Task<AuthenticateDTO> LoginAsync(LogInDTo dto)

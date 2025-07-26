@@ -29,7 +29,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpGet("GetUsers")]
-        //[Authorize("AdminRole")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await userManager.Users.ToListAsync();
@@ -52,6 +52,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpGet("GetUser")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> GetUser()
         {
             var user = await userManager.GetUserAsync(User);
@@ -74,6 +75,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpPut("EditUser")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> UpdateUser(UpdateUserDTO dto)
         {
             var user = await userManager.GetUserAsync(User);
@@ -107,6 +109,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpDelete ("DeleteUser/{Id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteUser(string Id)
         {
             var user = await userManager.FindByIdAsync(Id);
@@ -114,9 +117,6 @@ namespace ProjectAPI.Controllers
                 return NotFound("This User Not Registed");
             await userManager.DeleteAsync(user);
             return Ok("User Is Deleted !");
-
-
-
         }
     }
 }

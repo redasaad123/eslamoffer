@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
@@ -79,6 +80,7 @@ namespace ProjectApi.Controllers
 
 
         [HttpPost("AddCoupon")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> AddCoupon([FromForm] CouponsDTO DTO)
         {
             if (!ModelState.IsValid)
@@ -138,6 +140,7 @@ namespace ProjectApi.Controllers
 
 
         [HttpPut("UpdateCoupon/{id}")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> UpdateOffer(string id ,[FromForm] CouponsDTO dto)
         {
             if (!ModelState.IsValid)
@@ -170,6 +173,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpDelete("DeleteCoupons/{id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteCoupons(string id)
         {
             var Coupons = await couponsUnitOfWork.Entity.GetAsync(id);

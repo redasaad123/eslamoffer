@@ -46,6 +46,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpPost("Register")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> Register(RegisterDTO dto)
         {
             var errors = ModelState.Values.SelectMany(x => x.Errors);
@@ -54,12 +55,10 @@ namespace ProjectAPI.Controllers
 
             var result = await authentication.RegisterAsync(dto);
 
-
-
-            if(!result.IsAuthenticated)
-                return BadRequest(result.Message);
-            if (!string.IsNullOrEmpty(result.RefreshToken))
-                setRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+            //if(!result.IsAuthenticated)
+            //    return BadRequest(result.Message);
+            //if (!string.IsNullOrEmpty(result.RefreshToken))
+            //    setRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
             return Ok(result);
 

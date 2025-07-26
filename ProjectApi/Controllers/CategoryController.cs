@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
@@ -33,6 +34,8 @@ namespace ProjectApi.Controllers
 
 
         [HttpPost("AddCategory")]
+        [Authorize("EditorRole")]
+
         public async Task<IActionResult> AddCategory([FromForm] CategoryDTO dto)
         {
             if (!ModelState.IsValid)
@@ -56,6 +59,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPut("UpdateCategory/{id}")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> UpdateCategory(string id, [FromForm] CategoryDTO category)
         {
             if (!ModelState.IsValid)
@@ -83,6 +87,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpDelete("DeleteCategory/{id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteCategory(string id)
         {
             var category = await categoryUnitOfWork.Entity.GetAsync(id);

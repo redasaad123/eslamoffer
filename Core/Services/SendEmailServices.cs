@@ -50,7 +50,7 @@ namespace Core.Services
 
                 Here are your account details:
 
-                Email: {email}
+                Email: {Email}
                 Password: {AcountPassword}
                 Role: {role}
 

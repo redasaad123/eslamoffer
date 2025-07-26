@@ -12,7 +12,7 @@ namespace ProjectAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize("UserRole")]
+    [Authorize("AdminRole")]
     public class RolesController : ControllerBase
     {
         private readonly IAuthentication authentication;
@@ -28,7 +28,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpGet("GetRoles")]
-        //[Authorize("AdminRole")]
+        
         public async Task<IActionResult> GetRols()
         {
             var roles = await roleManager.Roles.ToListAsync();
@@ -63,7 +63,7 @@ namespace ProjectAPI.Controllers
 
 
         [HttpPost("AddRole")]
-        //[Authorize("AdminRole")]
+        
         public async Task<IActionResult> AddRole(RoleDTO dto)
         {
             if (!ModelState.IsValid)
@@ -79,7 +79,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpPost("AddRolesToUser")]
-        //[Authorize("AdminRole")]
+        
         public async Task<IActionResult> AddRolesToUser([FromForm] RoleToUserDTO dto)
         {
             if (!ModelState.IsValid)
@@ -95,7 +95,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpPut("UpdateRole/{roleId}")]
-        //[Authorize("AdminRole")]
+        
         public async Task<IActionResult> UpdateRole(string roleId , RoleDTO dto)
         {
             var RoleExist = await roleManager.FindByIdAsync(roleId);
@@ -112,7 +112,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpPut("UpdateRoleToUser/{roleId}")]
-        //[Authorize("AdminRole")]
+        
         public async Task<IActionResult> UpdateRoleToUser(string roleId, RoleToUserDTO dto)
         {
             var RoleExist = await roleManager.FindByIdAsync(roleId);
@@ -133,7 +133,7 @@ namespace ProjectAPI.Controllers
         }
 
         [HttpDelete("DeleteRole/{RoleId}")]
-        //[Authorize("AdminRole")]
+        
         public async Task< IActionResult> DeleteRole(string roleId)
         {
             var RoleExist = await roleManager.FindByIdAsync(roleId);

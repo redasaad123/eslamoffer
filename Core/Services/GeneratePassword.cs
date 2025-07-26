@@ -10,7 +10,7 @@ namespace Core.Services
     {
         public async Task <string> GenPasswordAsync(int length = 12)
         {
-            const string chars = "zsrextdrcyftvugybnhumijpokyt12345678!@#$%^&*()_";
+            const string chars = "zsrextdrcyftUH345678ASOEFA8CFvugybnhumijpokyt12";
             Random random = new Random();
             StringBuilder password = new StringBuilder(length);
             for (int i = 0; i < length; i++)

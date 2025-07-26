@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
@@ -66,6 +67,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddStore")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
@@ -91,6 +93,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPut("UpdateStore/{id}")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> UpdateStore(string id, [FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
@@ -119,6 +122,7 @@ namespace ProjectApi.Controllers
 
 
         [HttpDelete("DeleteStore/{id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteStore(string id)
         {
             var store = await storeUnitOfWork.Entity.GetAsync(id);
