@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250726191401_update-offer")]
+    partial class updateoffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,14 +147,11 @@ namespace Infrastructure.Migrations
                     b.Property<bool?>("IsBest")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("LastUseAt")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("LastUseAt")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("LinkRealStore")
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("Number")
-                        .HasColumnType("int");
 
                     b.Property<string>("StoreId")
                         .IsRequired()

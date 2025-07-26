@@ -9,6 +9,8 @@
         public string? LinkPage { get; set; }
         public string? couponId { get; set; }
 
+        public string? CurrencyCodes { get; set; }
+
         public IFormFile? ImageStoreUrl { get; set; }
 
         public bool IsBast { get; set; } = false;

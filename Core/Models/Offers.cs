@@ -17,6 +17,8 @@ namespace Core.Models
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
         public double? Price { get; set; }
+
+        public string? CurrencyCodes { get; set; }
         public double? Discount { get; set; }
         public string? LinkPage { get; set; }
         public bool IsBast { get; set; } = false;

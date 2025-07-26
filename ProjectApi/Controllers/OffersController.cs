@@ -66,6 +66,7 @@ namespace ProjectApi.Controllers
                 Title = DTO.Title,
                 couponId = DTO.couponId,
                 Price = DTO.Price,
+                CurrencyCodes = DTO.CurrencyCodes,
                 Discount = DTO.Discount,
                 CreatedAt = DateTime.Now,
                 LastUpdatedAt = DateTime.Now,
@@ -108,7 +109,7 @@ namespace ProjectApi.Controllers
                 offer.ImageStoreUrl = urlImage;
             }
 
-
+            offer.CurrencyCodes = DTO.CurrencyCodes;
             offer.Title = DTO.Title;
             offer.Price = DTO.Price;
             offer.Discount = DTO.Discount;

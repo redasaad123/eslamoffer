@@ -27,7 +27,9 @@ namespace Core.Models
 
         public DateTime? CreatedAt { get; set; }
 
-        public string? LastUseAt { get; set; }
+        public int? Number { get; set; } = 0;
+
+        public DateTime? LastUseAt { get; set; }
 
         public bool? IsActive { get; set; }
 

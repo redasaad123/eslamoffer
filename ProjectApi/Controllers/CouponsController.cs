@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectApi.DTO;
 using ProjectApi.Services;
+using SixLabors.ImageSharp;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjectApi.Controllers
@@ -105,7 +106,7 @@ namespace ProjectApi.Controllers
                 StratDate = DTO.StratDate,
                 EndDate = DTO.EndDate,
                 CreatedAt = DateTime.Now,
-                LastUseAt =  DateTime.Now.ToString(@"hh/:mm"),
+                LastUseAt =  DateTime.UtcNow,
                 IsActive = DTO.IsActive ?? true,
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
@@ -118,8 +119,8 @@ namespace ProjectApi.Controllers
 
         }
 
-        [HttpPut("UpdateLastUse/{Id}")]
-        public async Task<IActionResult> UpdateLastUse(string Id)
+        [HttpPut("NumberUsed/{Id}")]
+        public async Task<IActionResult> NumberUsed(string Id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -128,10 +129,11 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Coupons not found.");
             }
-            Coupons.LastUseAt = DateTime.Now.ToString(@"hh:mm");    
+            Coupons.LastUseAt = DateTime.UtcNow;
+            Coupons.Number = Coupons.Number + 1;
             await couponsUnitOfWork.Entity.UpdateAsync(Coupons);
             couponsUnitOfWork.Save();
-            return Ok();
+            return Ok(new { LastUseAt = Coupons.LastUseAt , Number = Coupons.Number });
         }
 
 
@@ -145,9 +147,6 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Coupons not found.");
             }
-
-            
-
 
             if (dto.ImageUrl != null && dto.ImageUrl.Length > 0)
             {
