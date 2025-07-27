@@ -114,7 +114,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Banner");
+                    b.ToTable("Banner", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.Category", b =>
@@ -134,7 +134,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.Coupons", b =>
@@ -192,7 +192,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupons");
+                    b.ToTable("Coupons", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.CouponsOffers", b =>
@@ -218,7 +218,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CouponsOffers");
+                    b.ToTable("CouponsOffers", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.FeedBack", b =>
@@ -247,7 +247,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FeedBack");
+                    b.ToTable("FeedBack", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.Offers", b =>
@@ -291,7 +291,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offers");
+                    b.ToTable("Offers", (string)null);
                 });
 
             modelBuilder.Entity("Core.Models.Store", b =>
@@ -326,7 +326,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores");
+                    b.ToTable("Stores", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -459,7 +459,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Models.AppUser", b =>
                 {
-                    b.OwnsMany("Core.Models.RefreshToken", "RefreshTokens", b1 =>
+                    b.OwnsMany("Core.Models.AppUser.RefreshTokens#Core.Models.RefreshToken", "RefreshTokens", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("varchar(255)");
@@ -483,7 +483,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("AppUserId", "Id");
 
-                            b1.ToTable("RefreshToken");
+                            b1.ToTable("RefreshToken", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
