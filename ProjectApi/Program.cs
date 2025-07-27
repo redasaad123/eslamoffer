@@ -137,8 +137,6 @@ namespace ProjectApi
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
-
-
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "/app/ProjectApi/uploads")),
                 RequestPath = "/uploads"
