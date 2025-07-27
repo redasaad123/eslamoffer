@@ -39,7 +39,7 @@ namespace ProjectApi
 
 
             builder.WebHost.UseUrls("http://+:80");
-
+            builder.Configuration.AddEnvironmentVariables();
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("jwt"));
             builder.Services.Configure<EmailConfgSettings>(builder.Configuration.GetSection("email-confg"));
 
