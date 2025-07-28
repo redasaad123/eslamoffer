@@ -10,7 +10,7 @@ namespace ProjectApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("AdminRole")]
+    
     public class BannerController : ControllerBase
     {
         private readonly IUnitOfWork<Banner> unitOfWork;
@@ -38,6 +38,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddBanner")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> AddBanner([FromForm] BannerDTO DTO)
         {
 
@@ -61,6 +62,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPut("UpdateBanner/{Id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> UpdateBanner([FromForm] BannerDTO DTO , string Id)
         {
             if (!ModelState.IsValid)
@@ -84,6 +86,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpDelete("DeleteBanner/{Id}")]
+        [Authorize("AdminRole")]
         public async Task<IActionResult> DeleteBanner(string Id)
         {
             var banner = await unitOfWork.Entity.GetAsync(Id);
