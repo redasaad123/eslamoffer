@@ -54,5 +54,10 @@ namespace Infrastructure
          
         public DbSet<CouponsOffers> CouponsOffers { get; set; }
 
+        public DbSet<SubscribeEmail> subscribeEmails { get; set; }
+
+       
+
+
     }
 }

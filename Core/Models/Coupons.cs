@@ -31,9 +31,16 @@ namespace Core.Models
 
         public DateTime? LastUseAt { get; set; }
 
+        [NotMapped]
+        public TimeSpan? LastUpdatedAt => DateTime.Now - LastUseAt;
+
         public bool? IsActive { get; set; }
 
         public bool? IsBest {  get; set; }
+
+        public bool? IsBastDiscount { get; set; }
+
+
 
 
         public string? LinkRealStore { get; set; }
@@ -43,13 +50,6 @@ namespace Core.Models
         public string StoreId { get; set; }
         [NotMapped]
         public Store Store { get; set; }
-
-
-
-        [ForeignKey("categoryId")]
-        public string categoryId { get; set; }
-        [NotMapped]
-        public Category category  { get; set; }
 
 
     }

@@ -25,13 +25,14 @@ namespace ProjectApi.DTO
         public bool? IsActive { get; set; }
 
         public bool? IsBest { get; set; }
+        public bool? IsBestDiscount { get; set; }
+
+
 
         public string? LinkRealStore { get; set; }
 
         public string StoreId { get; set; }
 
-        public string categoryId { get; set; }
-
-
+       
     }
 }

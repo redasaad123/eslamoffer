@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250730115152_UpdatetableCoumpon")]
+    partial class UpdatetableCoumpon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,9 +301,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Categorys")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -509,36 +509,6 @@ namespace Infrastructure.Migrations
                         });
 
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Core.Models.Store", b =>
-                {
-                    b.OwnsMany("Core.Models.DescriptionStore", "DescriptionStores", b1 =>
-                        {
-                            b1.Property<string>("StoreId")
-                                .HasColumnType("varchar(255)");
-
-                            b1.Property<string>("Id")
-                                .HasColumnType("varchar(255)");
-
-                            b1.Property<string>("Description")
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("ImageDescriptionStore")
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("SubHeaderDescription")
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("StoreId", "Id");
-
-                            b1.ToTable("DescriptionStore");
-
-                            b1.WithOwner()
-                                .HasForeignKey("StoreId");
-                        });
-
-                    b.Navigation("DescriptionStores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

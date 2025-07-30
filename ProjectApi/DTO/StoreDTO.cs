@@ -11,5 +11,13 @@
         public string? Description { get; set; }
 
         public bool IsBast { get; set; }
+
+        public List< string> ? CategoryId { get; set; }
+
+        public bool? IsUpdateCategory { get; set; } = false;
+
+        public List<DescriptionStoreDTO> descriptionStores { get; set; }
     }
+
+
 }

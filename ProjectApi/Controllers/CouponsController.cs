@@ -51,19 +51,18 @@ namespace ProjectApi.Controllers
             return Ok(coupons);
         }
 
-
-
-        [HttpGet("GetCouponsInCategory/{catrgoryId}")]
-        public async Task<IActionResult> GetCouponsInCategory(string catrgoryId)
+        [HttpGet("GetBestCoupons/BestDiscount")]
+        public async Task<IActionResult> GetBestDiscountCoupons()
         {
-            var Coupons = await couponsUnitOfWork.Entity.FindAll(x => x.categoryId == catrgoryId);
-            if (Coupons == null || !Coupons.Any())
+            var coupons = await couponsUnitOfWork.Entity.FindAll(x => x.IsBastDiscount == true);
+            if (coupons == null || !coupons.Any())
             {
-                return NotFound("No Coupons found in this category.");
+                return NotFound("No best Coupons found.");
             }
-            return Ok(Coupons);
-
+            return Ok(coupons);
         }
+
+
 
         [HttpGet]
         [Route("GetCouponsByStore/{storeId}")]
@@ -90,12 +89,6 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Store not found.");
             }
-            var category = await categoryUnitOfWork.Entity.GetAsync(DTO.categoryId);
-            if (category == null)
-            {
-                return NotFound("Category not found.");
-            }
-
             var url = await storeImage.SaveImageAsync(DTO.ImageUrl);
             var Coupons = new Coupons
             {
@@ -113,7 +106,7 @@ namespace ProjectApi.Controllers
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
                 StoreId = store.Id,
-                categoryId = category.Id
+                IsBastDiscount = DTO.IsBestDiscount ?? false,
             };
             await couponsUnitOfWork.Entity.AddAsync(Coupons);
             couponsUnitOfWork.Save();
@@ -131,11 +124,11 @@ namespace ProjectApi.Controllers
             {
                 return NotFound("Coupons not found.");
             }
-            Coupons.LastUseAt = DateTime.UtcNow;
+            Coupons.LastUseAt = DateTime.Now;
             Coupons.Number = Coupons.Number + 1;
             await couponsUnitOfWork.Entity.UpdateAsync(Coupons);
             couponsUnitOfWork.Save();
-            return Ok(new { LastUseAt = Coupons.LastUseAt , Number = Coupons.Number });
+            return Ok(new { LastUpdatedAt = Coupons.LastUpdatedAt , Number = Coupons.Number });
         }
 
 
@@ -163,8 +156,9 @@ namespace ProjectApi.Controllers
             Coupons.CouponCode = dto.CouponCode;
             Coupons.StratDate = dto.StratDate;
             Coupons.EndDate = dto.EndDate;
-            Coupons.IsActive = dto.IsActive ?? true;
-            Coupons.IsBest = dto.IsBest ?? false;
+            Coupons.IsActive = dto.IsActive ?? Coupons.IsActive;
+            Coupons.IsBest = dto.IsBest ?? Coupons.IsBest;
+            Coupons.IsBastDiscount = dto.IsBestDiscount ?? Coupons.IsBastDiscount;
             Coupons.LinkRealStore = dto.LinkRealStore;
             await couponsUnitOfWork.Entity.UpdateAsync(Coupons);
             couponsUnitOfWork.Save();

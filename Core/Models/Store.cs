@@ -14,17 +14,23 @@ namespace Core.Models
 
         public string Name { get; set; }
 
+        public string? Description { get; set; }
         public string? LogoUrl { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime LastUpdatedAt { get; set; }
         public string? HeaderDescription { get; set; }
-        public string? Description { get; set; }
+
+        
 
         public bool? Isactive { get; set; }
 
         public bool IsBast {  get; set; }
+
+        public List<string>? Categorys { get; set; } = new List<string>();
+
+       public List<DescriptionStore>? DescriptionStores { get; set; }
 
     }
 }

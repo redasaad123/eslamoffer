@@ -66,6 +66,24 @@ namespace ProjectApi.Controllers
             return Ok(store);
         }
 
+        [HttpGet("GetStoresByCategory/{categoryId}")]
+        public async Task<IActionResult> GetStoresByCategory(string categoryId)
+        {
+            if (string.IsNullOrEmpty(categoryId))
+            {
+                return BadRequest("Category ID cannot be null or empty.");
+            }
+            var stores = await storeUnitOfWork.Entity.GetAllAsync();
+            if (stores == null || !stores.Any())
+            {
+                return NotFound("No stores found for the specified category.");
+            }
+
+            var Filter = stores.Where(x => x.Categorys.Contains(categoryId)).ToList();
+
+            return Ok(Filter);
+        }
+
         [HttpPost("AddStore")]
         [Authorize("EditorRole")]
         public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
@@ -85,8 +103,14 @@ namespace ProjectApi.Controllers
                 Description = dto.Description,
                 Name = dto.Name,
                 LogoUrl = url,
-                IsBast = dto.IsBast
+                IsBast = dto.IsBast,
             };
+            store.Categorys = new List<string>();
+            if (dto.CategoryId != null || dto.CategoryId.Any())
+            {
+                store.Categorys.AddRange(dto.CategoryId);
+            }
+
             var addedStore = await storeUnitOfWork.Entity.AddAsync(store);
             storeUnitOfWork.Save();
             return Ok(store);
@@ -110,6 +134,14 @@ namespace ProjectApi.Controllers
                 store.LogoUrl = url;
             }
 
+            if(dto.IsUpdateCategory == true)
+            {
+                store.Categorys = new List<string>();
+                if (dto.CategoryId != null || dto.CategoryId.Any())
+                {
+                    store.Categorys.AddRange(dto.CategoryId);
+                }
+            }
             store.Name = dto.Name;
             store.HeaderDescription = dto.HeaderDescription;
             store.Description = dto.Description;
