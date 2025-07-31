@@ -50,6 +50,7 @@ namespace ProjectApi
             builder.Services.AddTransient<SendEmailServices>();
             builder.Services.AddTransient<GeneratePassword>();
             builder.Services.AddTransient<MessageRole>();
+            builder.Services.AddTransient<GenerateSlugService>();
 
 
 

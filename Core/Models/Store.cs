@@ -13,7 +13,7 @@ namespace Core.Models
         public string Id { get; set; }
 
         public string Name { get; set; }
-
+        public string? Slug { get; set; }
         public string? Description { get; set; }
         public string? LogoUrl { get; set; }
 
@@ -22,7 +22,6 @@ namespace Core.Models
         public DateTime LastUpdatedAt { get; set; }
         public string? HeaderDescription { get; set; }
 
-        
 
         public bool? Isactive { get; set; }
 
@@ -30,7 +29,7 @@ namespace Core.Models
 
         public List<string>? Categorys { get; set; } = new List<string>();
 
-       public List<DescriptionStore>? DescriptionStores { get; set; }
+        public List<DescriptionStore>? DescriptionStore { get; set; } 
 
     }
 }

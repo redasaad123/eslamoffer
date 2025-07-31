@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250731000100_update-DescriptionStore2")]
+    partial class updateDescriptionStore2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,6 +223,31 @@ namespace Infrastructure.Migrations
                     b.ToTable("CouponsOffers");
                 });
 
+            modelBuilder.Entity("Core.Models.DescriptionStore", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImageDescriptionStore")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("SubHeaderDescription")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("DescriptionStores");
+                });
+
             modelBuilder.Entity("Core.Models.FeedBack", b =>
                 {
                     b.Property<string>("Id")
@@ -324,9 +352,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Slug")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -514,34 +539,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Core.Models.Store", b =>
+            modelBuilder.Entity("Core.Models.DescriptionStore", b =>
                 {
-                    b.OwnsMany("Core.Models.DescriptionStore", "DescriptionStore", b1 =>
-                        {
-                            b1.Property<string>("StoreId")
-                                .HasColumnType("varchar(255)");
+                    b.HasOne("Core.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                            b1.Property<string>("Id")
-                                .HasColumnType("varchar(255)");
-
-                            b1.Property<string>("Description")
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("Image")
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("SubHeader")
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("StoreId", "Id");
-
-                            b1.ToTable("DescriptionStore");
-
-                            b1.WithOwner()
-                                .HasForeignKey("StoreId");
-                        });
-
-                    b.Navigation("DescriptionStore");
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

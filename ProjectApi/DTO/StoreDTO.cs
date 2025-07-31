@@ -10,13 +10,16 @@
 
         public string? Description { get; set; }
 
+        public string? Slug { get; set; }
+
         public bool IsBast { get; set; }
 
         public List< string> ? CategoryId { get; set; }
 
         public bool? IsUpdateCategory { get; set; } = false;
 
-        public List<DescriptionStoreDTO> descriptionStores { get; set; }
+        public List<DescriptionStoreDTO> descriptionStores { get; set; } = new List<DescriptionStoreDTO>();
+
     }
 
 

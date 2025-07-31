@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +42,7 @@ namespace Infrastructure
             {
                 b.Property(r => r.NormalizedName).HasMaxLength(191);
             });
+
         }
         public DbSet<FeedBack> FeedBack { get; set; }
 
@@ -56,7 +58,7 @@ namespace Infrastructure
 
         public DbSet<SubscribeEmail> subscribeEmails { get; set; }
 
-       
+
 
 
     }

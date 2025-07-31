@@ -2,9 +2,10 @@
 {
     public class DescriptionStoreDTO
     {
-        public string? SubHeaderDescription { get; set; }
+        public string? SubHeader { get; set; }
+
         public string? Description { get; set; }
 
-        public IFormFile? ImageDescriptionStore { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

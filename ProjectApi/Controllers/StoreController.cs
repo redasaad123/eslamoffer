@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace ProjectApi.Controllers
     public class StoreController : ControllerBase
     {
         private readonly IUnitOfWork<Store> storeUnitOfWork;
+        private readonly GenerateSlugService slugservices;
         private readonly StoreImage services;
 
-        public StoreController(IUnitOfWork<Store> StoreUnitOfWork , StoreImage services)
+        public StoreController(IUnitOfWork<Store> StoreUnitOfWork , StoreImage services , GenerateSlugService Slugservices)
         {
             storeUnitOfWork = StoreUnitOfWork;
+            slugservices = Slugservices;
             this.services = services;
         }
 
@@ -44,24 +47,24 @@ namespace ProjectApi.Controllers
             return Ok(stores);
         }
 
-        [HttpGet("GetStoreById/{id}")]
-        public async Task<IActionResult> GetStoreById(string id)
+        [HttpGet("GetStoreById/{slug}")]
+        public async Task<IActionResult> GetStoreById(string slug)
         {
-            var store = await storeUnitOfWork.Entity.GetAsync(id);
+            var store = storeUnitOfWork.Entity.Find(x=> x.Slug== slug);
             if (store == null)
             {
                 return NotFound("Store not found.");
             }
-            var stores = new
-            {
-                Id = store.Id,
-                Name = store.Name,
-                LogoUrl = store.LogoUrl,
-                CreatedAt = store.CreatedAt,
-                LastUpdatedAt = store.LastUpdatedAt,
-                HeaderDescription = store.HeaderDescription,
-                Description = store.Description,
-            };
+            //var stores = new
+            //{
+            //    Id = store.Id,
+            //    Name = store.Name,
+            //    LogoUrl = store.LogoUrl,
+            //    CreatedAt = store.CreatedAt,
+            //    LastUpdatedAt = store.LastUpdatedAt,
+            //    HeaderDescription = store.HeaderDescription,
+            //    Description = store.Description,
+            //};
 
             return Ok(store);
         }
@@ -85,7 +88,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddStore")]
-        [Authorize("EditorRole")]
+        //[Authorize("EditorRole")]
         public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
@@ -102,14 +105,33 @@ namespace ProjectApi.Controllers
                 HeaderDescription = dto.HeaderDescription,
                 Description = dto.Description,
                 Name = dto.Name,
+                Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name),
                 LogoUrl = url,
                 IsBast = dto.IsBast,
+                Categorys = new List<string>(),
+                DescriptionStore = new List<DescriptionStore>()
+
             };
-            store.Categorys = new List<string>();
             if (dto.CategoryId != null || dto.CategoryId.Any())
             {
                 store.Categorys.AddRange(dto.CategoryId);
             }
+
+            foreach (var ds in dto.descriptionStores)
+            {
+                var descriptionStore = new DescriptionStore
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Description = ds.Description,
+                    SubHeader = ds.SubHeader,
+                    Image = ds.Image != null
+                        ? await services.SaveImageAsync(ds.Image)
+                        : null
+                };
+
+                store.DescriptionStore.Add(descriptionStore);
+            }
+
 
             var addedStore = await storeUnitOfWork.Entity.AddAsync(store);
             storeUnitOfWork.Save();
@@ -142,6 +164,7 @@ namespace ProjectApi.Controllers
                     store.Categorys.AddRange(dto.CategoryId);
                 }
             }
+
             store.Name = dto.Name;
             store.HeaderDescription = dto.HeaderDescription;
             store.Description = dto.Description;
@@ -150,6 +173,61 @@ namespace ProjectApi.Controllers
             var updatedStore = await storeUnitOfWork.Entity.UpdateAsync(store);
             storeUnitOfWork.Save();
             return Ok(updatedStore);
+        }
+
+        [HttpPost("AddDescriptionStore/{storeId}")]
+        public async Task<IActionResult> AddDescriptionStore(DescriptionStoreDTO DTO , string storeId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var store = await storeUnitOfWork.Entity.GetAsync(storeId);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+            var descriptionStore = new DescriptionStore
+            {
+                Id = Guid.NewGuid().ToString(),
+                Description = DTO.Description,
+                SubHeader = DTO.SubHeader,
+                Image = DTO.Image != null ? await services.SaveImageAsync(DTO.Image) : null
+            };
+            store.DescriptionStore.Add(descriptionStore);
+            await storeUnitOfWork.Entity.UpdateAsync(store);
+            storeUnitOfWork.Save();
+            return Ok(descriptionStore);
+
+        }
+
+
+
+
+        [HttpPut("UpdateDescriptionStore/{storeId}/{Id}")]
+        public async Task<IActionResult> UpdateDescriptionStore(string Id , string storeId ,[FromForm] DescriptionStoreDTO dTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var store = await storeUnitOfWork.Entity.GetAsync(storeId);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+            var descriptionStore = store.DescriptionStore.FirstOrDefault(x => x.Id == Id);
+            if (descriptionStore == null)
+            {
+                return NotFound("Description not found.");
+            }
+            if (dTO.Image != null)
+            {
+                descriptionStore.Image = await services.SaveImageAsync(dTO.Image);
+            }
+            descriptionStore.SubHeader = dTO.SubHeader;
+            descriptionStore.Description = dTO.Description;
+            await storeUnitOfWork.Entity.UpdateAsync(store);
+            storeUnitOfWork.Save();
+            return Ok(descriptionStore);
+
+
         }
 
 
@@ -168,5 +246,25 @@ namespace ProjectApi.Controllers
 
 
         }
+
+        [HttpDelete("DeleteDescriptionStore/{storeId}/{Id}")]
+        public async Task<IActionResult> DeleteDescriptionStore(string Id, string storeId)
+        {
+            var store = await storeUnitOfWork.Entity.GetAsync(storeId);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+            var descriptionStore = store.DescriptionStore.FirstOrDefault(x => x.Id == Id);
+            if (descriptionStore == null)
+            {
+                return NotFound("Description not found.");
+            }
+            store.DescriptionStore.Remove(descriptionStore);
+            await storeUnitOfWork.Entity.UpdateAsync(store);
+            storeUnitOfWork.Save();
+            return Ok("Description deleted successfully.");
+        }
+
     }
 }
