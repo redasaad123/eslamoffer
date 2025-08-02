@@ -88,7 +88,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddStore")]
-        //[Authorize("EditorRole")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> AddStore([FromForm] StoreDTO dto)
         {
             if (!ModelState.IsValid)
@@ -168,6 +168,7 @@ namespace ProjectApi.Controllers
             store.Name = dto.Name;
             store.HeaderDescription = dto.HeaderDescription;
             store.Description = dto.Description;
+            store.Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name);
             store.IsBast = dto.IsBast;
             store.LastUpdatedAt = DateTime.UtcNow;
             var updatedStore = await storeUnitOfWork.Entity.UpdateAsync(store);
