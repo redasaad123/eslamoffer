@@ -30,10 +30,25 @@ namespace Core.Models
         public int? Number { get; set; } = 0;
 
         public DateTime? LastUseAt { get; set; }
-
         [NotMapped]
-        public TimeSpan? LastUpdatedAt => DateTime.Now - LastUseAt;
+        public string LastUpdatedAt
+        {
+            get
+            {
+                if (!LastUseAt.HasValue) return null;
 
+                TimeSpan difference = DateTime.Now - LastUseAt.Value ;
+
+                // لو النتيجة سالبة (الوقت فات)
+                //if (difference.TotalMilliseconds < 0)
+                //{
+                //    difference = DateTime.Now - LastUseAt.Value;
+                //    return $"{difference.Days}:{difference.Hours}:{difference.Minutes}";
+                //}
+                // لو النتيجة موجبة (الوقت لسه جاي)
+                return $"{difference.Days}:{difference.Hours}:{difference.Minutes}";
+            }
+        }
         public bool? IsActive { get; set; }
 
         public bool? IsBest {  get; set; }

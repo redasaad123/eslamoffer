@@ -101,7 +101,7 @@ namespace ProjectApi.Controllers
                 StratDate = DTO.StratDate,
                 EndDate = DTO.EndDate,
                 CreatedAt = DateTime.Now,
-                LastUseAt =  DateTime.UtcNow,
+                LastUseAt =  DateTime.Now,
                 IsActive = DTO.IsActive ?? true,
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
