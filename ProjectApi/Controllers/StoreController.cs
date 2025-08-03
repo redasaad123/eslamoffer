@@ -47,7 +47,7 @@ namespace ProjectApi.Controllers
             return Ok(stores);
         }
 
-        [HttpGet("GetStoreById/{slug}")]
+        [HttpGet("GetStoreBySlug/{slug}")]
         public async Task<IActionResult> GetStoreById(string slug)
         {
             var store = storeUnitOfWork.Entity.Find(x=> x.Slug== slug);
@@ -69,10 +69,10 @@ namespace ProjectApi.Controllers
             return Ok(store);
         }
 
-        [HttpGet("GetStoresByCategory/{categoryId}")]
-        public async Task<IActionResult> GetStoresByCategory(string categoryId)
+        [HttpGet("GetStoresByCategory/{slug}")]
+        public async Task<IActionResult> GetStoresByCategory(string slug)
         {
-            if (string.IsNullOrEmpty(categoryId))
+            if (string.IsNullOrEmpty(slug))
             {
                 return BadRequest("Category ID cannot be null or empty.");
             }
@@ -82,7 +82,7 @@ namespace ProjectApi.Controllers
                 return NotFound("No stores found for the specified category.");
             }
 
-            var Filter = stores.Where(x => x.Categorys.Contains(categoryId)).ToList();
+            var Filter = stores.Where(x => x.Categorys.Contains(slug)).ToList();
 
             return Ok(Filter);
         }
@@ -112,9 +112,9 @@ namespace ProjectApi.Controllers
                 DescriptionStore = new List<DescriptionStore>()
 
             };
-            if (dto.CategoryId != null || dto.CategoryId.Any())
+            if (dto.SlugCategory != null || dto.SlugCategory.Any())
             {
-                store.Categorys.AddRange(dto.CategoryId);
+                store.Categorys.AddRange(dto.SlugCategory);
             }
 
             foreach (var ds in dto.descriptionStores)
@@ -159,9 +159,9 @@ namespace ProjectApi.Controllers
             if(dto.IsUpdateCategory == true)
             {
                 store.Categorys = new List<string>();
-                if (dto.CategoryId != null || dto.CategoryId.Any())
+                if (dto.SlugCategory != null || dto.SlugCategory.Any())
                 {
-                    store.Categorys.AddRange(dto.CategoryId);
+                    store.Categorys.AddRange(dto.SlugCategory);
                 }
             }
 

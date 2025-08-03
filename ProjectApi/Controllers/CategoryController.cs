@@ -12,11 +12,13 @@ namespace ProjectApi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        private readonly GenerateSlugService service;
         private readonly IUnitOfWork<Category> categoryUnitOfWork;
         private readonly StoreImage storeImage;
 
-        public CategoryController(IUnitOfWork<Category> CategoryUnitOfWork , StoreImage storeImage)
+        public CategoryController(GenerateSlugService service,IUnitOfWork<Category> CategoryUnitOfWork , StoreImage storeImage)
         {
+            this.service = service;
             categoryUnitOfWork = CategoryUnitOfWork;
             this.storeImage = storeImage;
         }
@@ -47,6 +49,7 @@ namespace ProjectApi.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 createdAt = DateTime.UtcNow,
+                Slug = service.GenerateSlug(dto.Slug ?? dto.Name),
                 Name = dto.Name,
                 IconUrl = url
 
@@ -78,7 +81,7 @@ namespace ProjectApi.Controllers
 
 
 
-
+            existingCategory.Slug = service.GenerateSlug(category.Slug ?? category.Name);
             existingCategory.Name = category.Name;
             
             await categoryUnitOfWork.Entity.UpdateAsync(existingCategory);

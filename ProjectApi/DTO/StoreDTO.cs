@@ -14,7 +14,7 @@
 
         public bool IsBast { get; set; }
 
-        public List< string> ? CategoryId { get; set; }
+        public List< string> ? SlugCategory { get; set; }
 
         public bool? IsUpdateCategory { get; set; } = false;
 

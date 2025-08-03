@@ -14,6 +14,7 @@ namespace Core.Models
 
         public string? IconUrl { get; set; }
 
+        public string? Slug { get; set; }
         public DateTime createdAt { get; set; }
 
         
