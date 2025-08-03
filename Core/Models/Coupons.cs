@@ -55,16 +55,9 @@ namespace Core.Models
 
         public bool? IsBastDiscount { get; set; }
 
-
-
-
         public string? LinkRealStore { get; set; }
 
-
-        [ForeignKey("StoreId")]
-        public string StoreId { get; set; }
-        [NotMapped]
-        public Store Store { get; set; }
+        public string? SlugStore { get; set; } 
 
 
     }

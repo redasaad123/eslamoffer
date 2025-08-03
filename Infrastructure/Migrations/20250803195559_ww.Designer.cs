@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250803195559_ww")]
+    partial class ww
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,13 +184,17 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("Number")
                         .HasColumnType("int");
 
-                    b.Property<string>("SlugStore")
+                    b.Property<string>("Slug")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("StratDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("df")
                         .IsRequired()
                         .HasColumnType("longtext");
 

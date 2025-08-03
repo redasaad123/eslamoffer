@@ -31,7 +31,7 @@ namespace ProjectApi.DTO
 
         public string? LinkRealStore { get; set; }
 
-        public string StoreId { get; set; }
+        public string? SlugStore { get; set; }
 
        
     }

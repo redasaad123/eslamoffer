@@ -65,10 +65,11 @@ namespace ProjectApi.Controllers
 
 
         [HttpGet]
-        [Route("GetCouponsByStore/{storeId}")]
-        public async Task<IActionResult> GetCouponsByStore(string storeId)
+        [Route("GetCouponsByStore/{slug}")]
+        public async Task<IActionResult> GetCouponsByStore(string slug)
         {
-            var coupons = await couponsUnitOfWork.Entity.FindAll(x => x.StoreId == storeId);
+
+            var coupons = await couponsUnitOfWork.Entity.FindAll(x => x.SlugStore == slug);
             if (coupons == null || !coupons.Any())
             {
                 return NotFound("No coupons found for this store.");
@@ -84,7 +85,7 @@ namespace ProjectApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var store = await storeUnitOfWork.Entity.GetAsync(DTO.StoreId);
+            var store = storeUnitOfWork.Entity.Find(x=>x.Slug == DTO.SlugStore);
             if (store == null)
             {
                 return NotFound("Store not found.");
@@ -102,10 +103,10 @@ namespace ProjectApi.Controllers
                 EndDate = DTO.EndDate,
                 CreatedAt = DateTime.Now,
                 LastUseAt =  DateTime.Now,
+                SlugStore = store.Slug,
                 IsActive = DTO.IsActive ?? true,
                 IsBest = DTO.IsBest ?? false,
                 LinkRealStore = DTO.LinkRealStore,
-                StoreId = store.Id,
                 IsBastDiscount = DTO.IsBestDiscount ?? false,
             };
             await couponsUnitOfWork.Entity.AddAsync(Coupons);
@@ -156,6 +157,7 @@ namespace ProjectApi.Controllers
             Coupons.CouponCode = dto.CouponCode;
             Coupons.StratDate = dto.StratDate;
             Coupons.EndDate = dto.EndDate;
+            Coupons.SlugStore = dto.SlugStore;
             Coupons.IsActive = dto.IsActive ?? Coupons.IsActive;
             Coupons.IsBest = dto.IsBest ?? Coupons.IsBest;
             Coupons.IsBastDiscount = dto.IsBestDiscount ?? Coupons.IsBastDiscount;
