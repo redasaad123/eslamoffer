@@ -104,6 +104,7 @@ namespace ProjectApi.Controllers
                 LastUpdatedAt = DateTime.UtcNow,
                 HeaderDescription = dto.HeaderDescription,
                 Description = dto.Description,
+                AltText = dto.AltText,
                 Name = dto.Name,
                 Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name),
                 LogoUrl = url,
@@ -126,7 +127,9 @@ namespace ProjectApi.Controllers
                     SubHeader = ds.SubHeader,
                     Image = ds.Image != null
                         ? await services.SaveImageAsync(ds.Image)
-                        : null
+                        : null,
+                    AltText = ds.AltText,
+                    
                 };
 
                 store.DescriptionStore.Add(descriptionStore);
@@ -170,6 +173,7 @@ namespace ProjectApi.Controllers
             store.Description = dto.Description;
             store.Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name);
             store.IsBast = dto.IsBast;
+            store.AltText = dto.AltText;
             store.LastUpdatedAt = DateTime.UtcNow;
             var updatedStore = await storeUnitOfWork.Entity.UpdateAsync(store);
             storeUnitOfWork.Save();
@@ -191,7 +195,8 @@ namespace ProjectApi.Controllers
                 Id = Guid.NewGuid().ToString(),
                 Description = DTO.Description,
                 SubHeader = DTO.SubHeader,
-                Image = DTO.Image != null ? await services.SaveImageAsync(DTO.Image) : null
+                Image = DTO.Image != null ? await services.SaveImageAsync(DTO.Image) : null,
+                AltText = DTO.AltText
             };
             store.DescriptionStore.Add(descriptionStore);
             await storeUnitOfWork.Entity.UpdateAsync(store);
@@ -223,6 +228,7 @@ namespace ProjectApi.Controllers
                 descriptionStore.Image = await services.SaveImageAsync(dTO.Image);
             }
             descriptionStore.SubHeader = dTO.SubHeader;
+            descriptionStore.AltText = dTO.AltText;
             descriptionStore.Description = dTO.Description;
             await storeUnitOfWork.Entity.UpdateAsync(store);
             storeUnitOfWork.Save();

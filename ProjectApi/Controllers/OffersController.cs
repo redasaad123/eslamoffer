@@ -70,6 +70,7 @@ namespace ProjectApi.Controllers
                 Price = DTO.Price,
                 CurrencyCodes = DTO.CurrencyCodes,
                 Discount = DTO.Discount,
+                AltText = DTO.AltText,
                 CreatedAt = DateTime.Now,
                 LastUpdatedAt = DateTime.Now,
                 LinkPage = DTO.LinkPage,
@@ -116,6 +117,7 @@ namespace ProjectApi.Controllers
             offer.Title = DTO.Title;
             offer.Price = DTO.Price;
             offer.Discount = DTO.Discount;
+            offer.AltText= DTO.AltText;
             offer.LastUpdatedAt = DateTime.Now;
             offer.LinkPage = DTO.LinkPage;
             offer.IsBast = DTO.IsBast;

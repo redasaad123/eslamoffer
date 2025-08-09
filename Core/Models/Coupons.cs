@@ -17,6 +17,8 @@ namespace Core.Models
 
         public string? ImageUrl { get; set; }
 
+        public string? AltText { get; set; }
+
         public double? Discount { get; set; }
 
         public string? CouponCode { get; set; }

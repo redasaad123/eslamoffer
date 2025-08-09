@@ -100,6 +100,7 @@ namespace ProjectApi.Controllers
                 Discount = DTO.Discount,
                 CouponCode = DTO.CouponCode,
                 StratDate = DTO.StratDate,
+                AltText = DTO.AltText ?? DTO.Title,
                 EndDate = DTO.EndDate,
                 CreatedAt = DateTime.Now,
                 LastUseAt =  DateTime.Now,
@@ -157,6 +158,7 @@ namespace ProjectApi.Controllers
             Coupons.CouponCode = dto.CouponCode;
             Coupons.StratDate = dto.StratDate;
             Coupons.EndDate = dto.EndDate;
+            Coupons.AltText = dto.AltText ?? dto.Title;
             Coupons.SlugStore = dto.SlugStore;
             Coupons.IsActive = dto.IsActive ?? Coupons.IsActive;
             Coupons.IsBest = dto.IsBest ?? Coupons.IsBest;

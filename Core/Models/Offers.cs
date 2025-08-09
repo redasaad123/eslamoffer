@@ -14,6 +14,7 @@ namespace Core.Models
         public string Id { get; set; }
         public string Title { get; set; }
         public  string? LogoUrl { get; set; }
+        public string? AltText { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
         public double? Price { get; set; }

@@ -17,6 +17,8 @@ namespace Core.Models
         public string? Description { get; set; }
         public string? LogoUrl { get; set; }
 
+        public string? AltText { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime LastUpdatedAt { get; set; }

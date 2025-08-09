@@ -4,6 +4,8 @@
     {
         public IFormFile? ImageUrl { get; set; }
 
+        public string? AltText { get; set; }
+
         public string? Link { get; set; }
 
         public int? Priority { get; set; }=0;

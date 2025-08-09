@@ -49,6 +49,7 @@ namespace ProjectApi.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 createdAt = DateTime.UtcNow,
+                AltText = dto.AltText ?? dto.Name,
                 Slug = service.GenerateSlug(dto.Slug ?? dto.Name),
                 Name = dto.Name,
                 IconUrl = url
@@ -83,7 +84,8 @@ namespace ProjectApi.Controllers
 
             existingCategory.Slug = service.GenerateSlug(category.Slug ?? category.Name);
             existingCategory.Name = category.Name;
-            
+            existingCategory.AltText = category.AltText ?? existingCategory.AltText;
+
             await categoryUnitOfWork.Entity.UpdateAsync(existingCategory);
             categoryUnitOfWork.Save();
             return Ok(existingCategory);

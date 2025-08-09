@@ -52,6 +52,7 @@ namespace ProjectApi.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 ImageUrl = imageUrl,
+                AltText = DTO.AltText,
                 Link = DTO.Link,
                 Priority = DTO.Priority 
             };
@@ -80,6 +81,7 @@ namespace ProjectApi.Controllers
             }
             banner.Link = DTO.Link;
             banner.Priority = DTO.Priority;
+            banner.AltText = DTO.AltText;
             await unitOfWork.Entity.UpdateAsync(banner);
             unitOfWork.Save();
             return Ok(banner);
