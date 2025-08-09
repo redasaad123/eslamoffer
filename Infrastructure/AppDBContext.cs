@@ -53,6 +53,8 @@ namespace Infrastructure
         public DbSet<Store> Stores { get; set; }
         public DbSet<Banner> Banner { get; set; }
         public DbSet<Offers> Offers { get; set; }
+
+        public DbSet<StoresOffers> StoresOffers { get; set; }
          
         public DbSet<CouponsOffers> CouponsOffers { get; set; }
 

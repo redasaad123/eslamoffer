@@ -1,8 +1,10 @@
-﻿namespace ProjectApi.Services
+﻿using Core.Interfaces;
+
+namespace ProjectApi.Services
 {
-    public class GenerateSlugService
+    public class GenerateSlugService 
     {
-        public string GenerateSlug(string title)
+        public string GenerateSlug(string title )
         {
             return title.ToLower().Replace(" ", "-").Replace(":", "").Replace(",", "");
         }

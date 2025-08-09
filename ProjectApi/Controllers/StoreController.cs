@@ -106,7 +106,7 @@ namespace ProjectApi.Controllers
                 Description = dto.Description,
                 AltText = dto.AltText,
                 Name = dto.Name,
-                Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name),
+                Slug = slugservices.GenerateSlug(dto.Slug ?? dto.Name  ),
                 LogoUrl = url,
                 IsBast = dto.IsBast,
                 Categorys = new List<string>(),
@@ -181,6 +181,7 @@ namespace ProjectApi.Controllers
         }
 
         [HttpPost("AddDescriptionStore/{storeId}")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> AddDescriptionStore(DescriptionStoreDTO DTO , string storeId)
         {
             if (!ModelState.IsValid)
@@ -209,6 +210,7 @@ namespace ProjectApi.Controllers
 
 
         [HttpPut("UpdateDescriptionStore/{storeId}/{Id}")]
+        [Authorize("EditorRole")]
         public async Task<IActionResult> UpdateDescriptionStore(string Id , string storeId ,[FromForm] DescriptionStoreDTO dTO)
         {
             if (!ModelState.IsValid)
