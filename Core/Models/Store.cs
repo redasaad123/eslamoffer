@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,10 @@ namespace Core.Models
 
         public List<string>? Categorys { get; set; } = new List<string>();
 
-        public List<DescriptionStore>? DescriptionStore { get; set; } 
+        public List<DescriptionStore>? DescriptionStore { get; set; }
+
+        [NotMapped]
+        public virtual List<StoreTags> StoreTags { get; set; }
 
     }
 }

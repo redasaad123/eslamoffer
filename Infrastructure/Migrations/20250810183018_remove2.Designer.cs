@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250810183018_remove2")]
+    partial class remove2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,21 +354,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("Core.Models.StoreTags", b =>
-                {
-                    b.Property<string>("StoreId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("TagId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("StoreId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("StoreTags");
-                });
-
             modelBuilder.Entity("Core.Models.StoresOffers", b =>
                 {
                     b.Property<string>("Id")
@@ -412,28 +400,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("subscribeEmails");
-                });
-
-            modelBuilder.Entity("Core.Models.Tags", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -632,25 +598,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("DescriptionStore");
                 });
 
-            modelBuilder.Entity("Core.Models.StoreTags", b =>
-                {
-                    b.HasOne("Core.Models.Store", "Store")
-                        .WithMany("StoreTags")
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.Tags", "Tag")
-                        .WithMany("StoreTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Store");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -700,16 +647,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Models.Store", b =>
-                {
-                    b.Navigation("StoreTags");
-                });
-
-            modelBuilder.Entity("Core.Models.Tags", b =>
-                {
-                    b.Navigation("StoreTags");
                 });
 #pragma warning restore 612, 618
         }

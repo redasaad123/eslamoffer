@@ -19,6 +19,8 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System;
 using ProjectApi.Services;
 using Core.Services;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ProjectApi
 {
@@ -51,12 +53,30 @@ namespace ProjectApi
             builder.Services.AddTransient<GeneratePassword>();
             builder.Services.AddTransient<MessageRole>();
             builder.Services.AddTransient<GenerateSlugService>();
+            builder.Services.AddTransient<TagsServices>();
 
 
 
 
             builder.Services.AddIdentity<AppUser, IdentityRole>().
                 AddEntityFrameworkStores<AppDBContext>();
+
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                // Option 1: Use ReferenceHandler.Preserve (keeps references)
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+
+                // Option 2: Use ReferenceHandler.IgnoreCycles (breaks cycles)
+                // options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
+                // Option 3: Increase max depth (not recommended for circular refs)
+                // options.JsonSerializerOptions.MaxDepth = 64;
+
+                // Additional settings
+                options.JsonSerializerOptions.WriteIndented = true;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
 
 
 

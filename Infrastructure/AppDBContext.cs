@@ -43,6 +43,17 @@ namespace Infrastructure
                 b.Property(r => r.NormalizedName).HasMaxLength(191);
             });
 
+            builder.Entity<StoreTags>(StoreTags =>
+            {
+                StoreTags.HasKey(st => new { st.StoreId, st.TagId });
+                StoreTags.HasOne(st => st.Store)
+                    .WithMany(s => s.StoreTags)
+                    .HasForeignKey(st => st.StoreId);
+                StoreTags.HasOne(st => st.Tag)
+                    .WithMany(t => t.StoreTags)
+                    .HasForeignKey(st => st.TagId);
+            });
+
         }
         public DbSet<FeedBack> FeedBack { get; set; }
 
@@ -59,6 +70,8 @@ namespace Infrastructure
         public DbSet<CouponsOffers> CouponsOffers { get; set; }
 
         public DbSet<SubscribeEmail> subscribeEmails { get; set; }
+
+        public DbSet<Tags> Tags { get; set; }
 
 
 

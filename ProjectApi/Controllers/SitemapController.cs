@@ -31,6 +31,11 @@ namespace YourNamespace.Controllers
             $"{baseUrl}/contact"
         };
 
+            var tags = _context.Tags
+                .Select(t => $"{baseUrl}/tag/{t.Slug}")
+                .ToList();
+
+
             // روابط المتاجر
             var storeUrls = _context.Stores
                 .Select(s => $"{baseUrl}/store/{s.Slug}" )
@@ -53,6 +58,7 @@ namespace YourNamespace.Controllers
 
             // دمج كل الروابط
             var allUrls = staticPages
+                .Concat(tags)
                 .Concat(storeUrls)
                 .Concat(categoryUrls)
                 .Concat(couponUrls)

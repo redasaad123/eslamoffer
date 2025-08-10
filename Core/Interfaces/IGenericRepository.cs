@@ -11,6 +11,7 @@ namespace Core.Interfaces
     {
 
         Task<IEnumerable<T>> GetAllAsync();
+        IQueryable<T> GetAllAsyncAsQuery();
 
         Task<T> GetAsync(string id);
 

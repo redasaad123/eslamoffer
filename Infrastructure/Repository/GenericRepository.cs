@@ -26,6 +26,11 @@ namespace Infrastructure.Repository
             return await _dbSet.ToListAsync();
         }
 
+        public IQueryable<T> GetAllAsyncAsQuery()
+        {
+            return _dbSet.AsQueryable();
+        }
+
         public async Task<T> GetAsync(string id)
         {
              return await _dbSet.FindAsync(id);

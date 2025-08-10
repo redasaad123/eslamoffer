@@ -21,6 +21,7 @@
         public bool? IsUpdateCategory { get; set; } = false;
 
         public List<DescriptionStoreDTO> descriptionStores { get; set; } = new List<DescriptionStoreDTO>();
+        public string? Tags { get; set; }
 
     }
 
