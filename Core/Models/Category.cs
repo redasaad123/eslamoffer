@@ -19,6 +19,9 @@ namespace Core.Models
         public string? Slug { get; set; }
         public DateTime createdAt { get; set; }
 
-        
+
+        public ICollection<CategoryTags>? CategoryTags { get; set; }
+
+
     }
 }

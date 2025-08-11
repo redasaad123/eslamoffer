@@ -8,5 +8,7 @@
         public string? AltText { get; set; }
 
         public IFormFile? IconUrl { get; set; }
+
+        public string? Tags { get; set; }
     }
 }

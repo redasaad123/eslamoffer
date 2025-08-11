@@ -16,7 +16,9 @@ namespace Core.Models
         public DateTime? UpdatedAt { get; set; }
 
         [NotMapped]
-        public List<StoreTags>? StoreTags { get; set; } 
+        public List<StoreTags>? StoreTags { get; set; }
+        [NotMapped]
+        public List<CategoryTags>? CategoryTags { get; set; }
 
 
     }

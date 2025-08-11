@@ -17,6 +17,13 @@ namespace ProjectApi.Services
 
         public async Task<string> CreateTagAsync(string tags)
         {
+            var tagExists = tagsUnitOfWork.Entity.GetAllAsyncAsQuery()
+                .FirstOrDefault(t => t.Name == tags);
+
+            if (tagExists != null)
+                return tagExists.Id;
+
+
             var tag = new Tags
             {
                 Id = Guid.NewGuid().ToString(),
@@ -24,7 +31,9 @@ namespace ProjectApi.Services
                 Slug = generateSlug.GenerateSlug(tags),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                StoreTags = new List<StoreTags>()
+                StoreTags = new List<StoreTags>(),
+                CategoryTags = new List<CategoryTags>()
+
             };
             await tagsUnitOfWork.Entity.AddAsync(tag);
             tagsUnitOfWork.Save();

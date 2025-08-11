@@ -54,6 +54,17 @@ namespace Infrastructure
                     .HasForeignKey(st => st.TagId);
             });
 
+            builder.Entity<CategoryTags>(CategoryTags =>
+            {
+                CategoryTags.HasKey(st => new { st.CategoryId, st.TagId });
+                CategoryTags.HasOne(st => st.Category)
+                    .WithMany(s => s.CategoryTags)
+                    .HasForeignKey(st => st.CategoryId);
+                CategoryTags.HasOne(st => st.tags)
+                    .WithMany(t => t.CategoryTags)
+                    .HasForeignKey(st => st.TagId);
+            });
+
         }
         public DbSet<FeedBack> FeedBack { get; set; }
 
