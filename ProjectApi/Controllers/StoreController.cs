@@ -33,7 +33,7 @@ namespace ProjectApi.Controllers
         [HttpGet("GetAllStores")]
         public async Task<IActionResult> GetAllStores()
         {
-            var store = storeUnitOfWork.Entity.GetAllAsyncAsQuery().Include(x => x.StoreTags).ToList();
+            var store = await storeUnitOfWork.Entity.GetAllAsync();
             
             if (store == null || !store.Any())
             {
@@ -92,6 +92,36 @@ namespace ProjectApi.Controllers
 
             return Ok(Filter);
         }
+
+        [HttpGet]
+        [Route("GetStoreTags/{storeId}")]
+
+        public async Task<IActionResult> GetStoreTags(string storeId)
+        {
+            if (string.IsNullOrEmpty(storeId))
+            {
+                return BadRequest("Store ID cannot be null or empty.");
+            }
+            var store = storeUnitOfWork.Entity.GetAllAsyncAsQuery().Include(x => x.StoreTags).ThenInclude(w => w.Tag).FirstOrDefault(x=>x.Id == storeId);
+            if (store == null)
+            {
+                return NotFound("Store not found.");
+            }
+
+            var tags = store.StoreTags.Select(t => new
+            {
+                t.Tag.Id,
+                t.Tag.Name,
+                t.Tag.Slug,
+            }).ToList();
+
+            return Ok(tags);
+        }
+
+
+
+
+
 
         [HttpPost("AddStore")]
         [Authorize("EditorRole")]
