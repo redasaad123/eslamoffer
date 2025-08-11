@@ -64,18 +64,7 @@ namespace ProjectApi
             builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
-                // Option 1: Use ReferenceHandler.Preserve (keeps references)
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-
-                // Option 2: Use ReferenceHandler.IgnoreCycles (breaks cycles)
-                // options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-
-                // Option 3: Increase max depth (not recommended for circular refs)
-                // options.JsonSerializerOptions.MaxDepth = 64;
-
-                // Additional settings
-                options.JsonSerializerOptions.WriteIndented = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
 
