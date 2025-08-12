@@ -12,6 +12,10 @@
 
         public string? LinkPage { get; set; }
 
+        public bool? IsBest { get; set; } = false;
+
+        public bool? IsBastDiscount { get; set; } = false;
+
         public string? SlugStore { get; set; }
 
     }

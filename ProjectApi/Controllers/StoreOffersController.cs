@@ -33,6 +33,31 @@ namespace ProjectApi.Controllers
             return Ok(offers);
         }
 
+        [HttpGet("GetTheBestOffers")]
+        public async Task<IActionResult> GetTheBestOffers()
+        {
+            var offers = storesOffersUnitOfWork.Entity.GetAllAsyncAsQuery().Where(x=>x.IsBest == true).ToList();
+            if (offers == null || !offers.Any())
+            {
+                return NotFound("No offers found.");
+            }
+
+            return Ok(offers);
+        }
+
+        [HttpGet("GetBestDiscountOffers")]
+        public async Task<IActionResult> GetBestDiscountOffers()
+        {
+            var offers = storesOffersUnitOfWork.Entity.GetAllAsyncAsQuery().Where(x => x.IsBastDiscount == true).ToList();
+            if (offers == null || !offers.Any())
+            {
+                return NotFound("No offers found.");
+            }
+            return Ok(offers);
+        }
+
+
+
         [HttpPost("AddOffer")]
         [Authorize("EditorRole")]
         public async Task<IActionResult> CreateOffer([FromForm] StoreOfferDTO dto)
@@ -52,6 +77,8 @@ namespace ProjectApi.Controllers
                 AltText = dto.AltText,
                 LinkPage = dto.LinkPage,
                 SlugStore = dto.SlugStore,
+                IsBastDiscount = dto.IsBastDiscount ,
+                IsBest = dto.IsBest ,
                 CreatedAt = DateTime.Now
             };
 
@@ -82,6 +109,8 @@ namespace ProjectApi.Controllers
             existingOffer.AltText = dto.AltText;
             existingOffer.LinkPage = dto.LinkPage;
             existingOffer.SlugStore = dto.SlugStore;
+            existingOffer.IsBastDiscount = dto.IsBastDiscount;
+            existingOffer.IsBest = dto.IsBest;
             await storesOffersUnitOfWork.Entity.UpdateAsync(existingOffer);
             storesOffersUnitOfWork.Save();
             return Ok(existingOffer);

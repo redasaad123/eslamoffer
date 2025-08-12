@@ -18,10 +18,18 @@ namespace Core.Models
         public string? AltText { get; set; }
 
         public DateTime? CreatedAt { get; set; }
+        public bool? IsBest { get; set; } 
+
+        public bool? IsBastDiscount { get; set; } 
 
         public string? LinkPage { get; set; }
 
         public string?SlugStore { get; set; }
+
+
+
+
+
 
 
 
