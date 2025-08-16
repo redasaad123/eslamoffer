@@ -40,7 +40,7 @@ namespace ProjectApi
             authorizationBuilder.AddPolicy("AuthorRole", p => p.RequireRole("admin","author"));
 
 
-            builder.WebHost.UseUrls("http://+:8080");
+            builder.WebHost.UseUrls("http://+:8080 ; https://+:8443");  
             builder.Configuration.AddEnvironmentVariables();
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
             builder.Services.Configure<EmailConfgSettings>(builder.Configuration.GetSection("EMAILCONFG"));
